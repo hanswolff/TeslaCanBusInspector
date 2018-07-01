@@ -1,0 +1,5 @@
+* text=auto
+*.cmd		eol=crlf
+*.cs		eol=crlf
+*.csproj	eol=crlf
+*.sh		eol=lf
