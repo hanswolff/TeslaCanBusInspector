@@ -6,11 +6,13 @@ namespace TeslaCanBusInspector.Tests.Models
 {
     public class SteeringAngleMessageTests
     {
+        private readonly byte[] _examplePayload = new byte[] { 0x20, 0x6E, 0x20, 0x00, 0x04, 0xFF, 0x20, 0x9F };
+
         [Fact]
         public void SteeringAngleDegrees()
         {
             // Act      
-            var message = new SteeringAngleMessage(new byte[] { 0x20, 0x6E, 0x20, 0x00, 0x04, 0xFF, 0x20, 0x9F } );
+            var message = new SteeringAngleMessage(_examplePayload);
 
             // Assert
             message.SteeringAngleDegrees.Should().Be(10.2m);
