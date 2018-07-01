@@ -6,26 +6,26 @@ namespace TeslaCanBusInspector.Tests.Models
 {
     public class BmsInfoMessageTests
     {
-        private readonly byte[] _examplePayload = new byte[] { 0x42, 0x22, 0xD1, 0x84 };
+        private readonly byte[] _examplePayload = new byte[] { 0x4E, 0x22, 0xE9, 0x84 };
 
         [Fact]
-        public void BatteryCurrent()
+        public void BmsMaxCharge()
         {
             // Act      
             var message = new BmsInfoMessage(_examplePayload);
 
             // Assert
-            message.BmsMaxCharge.Should().Be(87.7m);
+            message.BmsMaxCharge.Should().Be(87.82m);
         }
         
         [Fact]
-        public void BatteryVoltage()
+        public void BmsMaxDischarge()
         {
             // Act      
             var message = new BmsInfoMessage(_examplePayload);
 
             // Assert
-            message.BmsMaxDischarge.Should().Be(336.64m);
+            message.BmsMaxDischarge.Should().Be(340.25m);
         }
     }
 }
