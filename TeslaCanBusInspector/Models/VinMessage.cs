@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 
+// ReSharper disable UnusedMember.Global
 namespace TeslaCanBusInspector.Models
 {
     public class VinMessage : IVinMessage
@@ -18,10 +19,7 @@ namespace TeslaCanBusInspector.Models
 
         public VinMessage(byte[] payload)
         {
-            if (payload.Length < 8)
-            {
-                throw new ArgumentException($"{nameof(payload)} must have at least 8 bytes", nameof(payload));
-            }
+            payload.RequireBytes(8);
 
             VinPartIndex = payload[0];
             VinPartValue = Encoding.Default.GetString(new ArraySegment<byte>(payload, 1, payload.Length - 1)).TrimEnd('\0', ' ');

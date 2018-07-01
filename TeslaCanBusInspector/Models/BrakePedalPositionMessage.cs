@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿// ReSharper disable UnusedMember.Global
 namespace TeslaCanBusInspector.Models
 {
     public class BrakePedalPositionMessage : IBrakePedalPositionMessage
@@ -15,10 +14,7 @@ namespace TeslaCanBusInspector.Models
 
         public BrakePedalPositionMessage(byte[] payload)
         {
-            if (payload.Length < 2)
-            {
-                throw new ArgumentException($"{nameof(payload)} must have at least 2 bytes", nameof(payload));
-            }
+            payload.RequireBytes(2);
 
             BrakePedalPositionPercent = (byte)(payload[0] + (payload[1] << 8) - 3239);
         }

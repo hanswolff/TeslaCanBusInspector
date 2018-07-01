@@ -1,5 +1,6 @@
 ﻿namespace TeslaCanBusInspector.Models
 {
+    // ReSharper disable UnusedMember.Global
     public class SpeedMessage : ICanBusMessage
     {
         public const ushort TypeId = 0x256;

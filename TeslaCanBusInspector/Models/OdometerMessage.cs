@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿// ReSharper disable UnusedMember.Global
 namespace TeslaCanBusInspector.Models
 {
     public class OdometerMessage : IOdometerMessage
@@ -18,10 +17,7 @@ namespace TeslaCanBusInspector.Models
 
         public OdometerMessage(byte[] payload)
         {
-            if (payload.Length < 4)
-            {
-                throw new ArgumentException($"{nameof(payload)} must have at least 4 bytes", nameof(payload));
-            }
+            payload.RequireBytes(4);
 
             OdometerValueMiles = (payload[0] + (payload[1] << 8) + (payload[2] << 16) + (payload[3] << 24)) / 1000.0m;
             OdometerValueKm = OdometerValueMiles * MilesToKm;

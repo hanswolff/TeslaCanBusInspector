@@ -1,5 +1,6 @@
 ﻿using System;
 
+// ReSharper disable UnusedMember.Global
 namespace TeslaCanBusInspector.Models
 {
     public class UnknownMessage : ICanBusMessage

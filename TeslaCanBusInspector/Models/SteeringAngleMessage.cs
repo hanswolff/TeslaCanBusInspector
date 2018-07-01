@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿// ReSharper disable UnusedMember.Global
 namespace TeslaCanBusInspector.Models
 {
     public class SteeringAngleMessage : ISteeringAngleMessage
@@ -15,10 +14,7 @@ namespace TeslaCanBusInspector.Models
 
         public SteeringAngleMessage(byte[] payload)
         {
-            if (payload.Length < 2)
-            {
-                throw new ArgumentException($"{nameof(payload)} must have at least 2 bytes", nameof(payload));
-            }
+            payload.RequireBytes(3);
 
             SteeringAngleDegrees = ((payload[0] << 8) + payload[1] - 8200.0m) / 10.0m;
         }

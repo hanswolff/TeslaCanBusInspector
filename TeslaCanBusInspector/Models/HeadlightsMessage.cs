@@ -1,4 +1,5 @@
-﻿namespace TeslaCanBusInspector.Models
+﻿// ReSharper disable UnusedMember.Global
+namespace TeslaCanBusInspector.Models
 {
     public class HeadlightsMessage : ICanBusMessage
     {
