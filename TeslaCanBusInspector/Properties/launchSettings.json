@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "TeslaCanBusInspector": {
+      "commandName": "Project",
+      "commandLineArgs": "D:\\candump.log"
+    }
+  }
+}
