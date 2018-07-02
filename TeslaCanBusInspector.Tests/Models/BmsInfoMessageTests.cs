@@ -16,7 +16,7 @@ namespace TeslaCanBusInspector.Tests.Models
             var message = new BmsInfoMessage(_examplePayload);
 
             // Assert
-            message.BmsMaxCharge.Should().Be(new KiloWatts(87.82));
+            message.BmsMaxCharge.Should().Be(new KiloWatt(87.82));
         }
         
         [Fact]
@@ -26,7 +26,7 @@ namespace TeslaCanBusInspector.Tests.Models
             var message = new BmsInfoMessage(_examplePayload);
 
             // Assert
-            message.BmsMaxDischarge.Should().Be(new KiloWatts(340.25));
+            message.BmsMaxDischarge.Should().Be(new KiloWatt(340.25));
         }
     }
 }

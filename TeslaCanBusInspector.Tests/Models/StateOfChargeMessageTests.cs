@@ -37,7 +37,7 @@ namespace TeslaCanBusInspector.Tests.Models
             var message = new StateOfChargeMessage(_examplePayloadAc);
 
             // Assert
-            message.ChargeTotal.Should().Be(new KiloWattHours(1108.383));
+            message.ChargeTotal.Should().Be(new KiloWattHour(1108.383));
         }
         
         [Fact]
@@ -47,7 +47,7 @@ namespace TeslaCanBusInspector.Tests.Models
             var message = new StateOfChargeMessage(_examplePayloadDc);
 
             // Assert
-            message.ChargeTotal.Should().Be(new KiloWattHours(3860.494));
+            message.ChargeTotal.Should().Be(new KiloWattHour(3860.494));
         }
 
         [Fact]

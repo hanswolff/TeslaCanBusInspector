@@ -9,8 +9,8 @@ namespace TeslaCanBusInspector.Models
         public const ushort TypeId = 0x3D2;
         public ushort MessageTypeId => TypeId;
 
-        public KiloWattHours ChargeTotal { get; }
-        public KiloWattHours DischargeTotal { get; }
+        public KiloWattHour ChargeTotal { get; }
+        public KiloWattHour DischargeTotal { get; }
 
         internal ChargeDischargeTotalMessage()
         {
@@ -20,14 +20,14 @@ namespace TeslaCanBusInspector.Models
         {
             payload.RequireBytes(8);
 
-            ChargeTotal = new KiloWattHours((payload[0] + (payload[1] << 8) + (payload[2] << 16) + (payload[3] << 24)) / 1000.0m);
-            DischargeTotal = new KiloWattHours((payload[4] + (payload[5] << 8) + (payload[6] << 16) + (payload[7] << 24)) / 1000.0m);
+            ChargeTotal = new KiloWattHour((payload[0] + (payload[1] << 8) + (payload[2] << 16) + (payload[3] << 24)) / 1000.0m);
+            DischargeTotal = new KiloWattHour((payload[4] + (payload[5] << 8) + (payload[6] << 16) + (payload[7] << 24)) / 1000.0m);
         }
     }
 
     public interface IChargeDischargeTotalMessage : ICanBusMessage
     {
-        KiloWattHours ChargeTotal { get; }
-        KiloWattHours DischargeTotal { get; }
+        KiloWattHour ChargeTotal { get; }
+        KiloWattHour DischargeTotal { get; }
     }
 }

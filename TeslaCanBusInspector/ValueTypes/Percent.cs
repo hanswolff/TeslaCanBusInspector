@@ -4,31 +4,31 @@ using System.Diagnostics.CodeAnalysis;
 namespace TeslaCanBusInspector.ValueTypes
 {
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
-    public struct Amps : IEquatable<Amps>
+    public struct Percent : IEquatable<Percent>
     {
         public readonly decimal Value;
 
-        public Amps(int value)
+        public Percent(int value)
         {
             Value = value;
         }
 
-        public Amps(decimal value)
+        public Percent(decimal value)
         {
             Value = value;
         }
 
-        public Amps(double value)
+        public Percent(double value)
         {
             Value = (decimal)value;
         }
 
-        public Amps(float value)
+        public Percent(float value)
         {
             Value = (decimal)value;
         }
 
-        public bool Equals(Amps other)
+        public bool Equals(Percent other)
         {
             return Value == other.Value;
         }
@@ -36,7 +36,7 @@ namespace TeslaCanBusInspector.ValueTypes
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
-            return obj is Amps && Equals((Amps)obj);
+            return obj is Percent && Equals((Percent)obj);
         }
 
         public override int GetHashCode()
@@ -44,14 +44,14 @@ namespace TeslaCanBusInspector.ValueTypes
             return Value.GetHashCode();
         }
 
-        public static implicit operator decimal(Amps valueType)
+        public static implicit operator decimal(Percent valueType)
         {
             return valueType.Value;
         }
 
         public override string ToString()
         {
-            return Value.ToString();
+            return $"{Value:N2} %";
         }
 
         public string ToString(IFormatProvider formatProvider)

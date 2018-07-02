@@ -4,31 +4,31 @@ using System.Diagnostics.CodeAnalysis;
 namespace TeslaCanBusInspector.ValueTypes
 {
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
-    public struct KiloWattHours : IEquatable<KiloWattHours>
+    public struct Ampere : IEquatable<Ampere>
     {
         public readonly decimal Value;
 
-        public KiloWattHours(int value)
+        public Ampere(int value)
         {
             Value = value;
         }
 
-        public KiloWattHours(decimal value)
+        public Ampere(decimal value)
         {
             Value = value;
         }
 
-        public KiloWattHours(double value)
+        public Ampere(double value)
         {
             Value = (decimal)value;
         }
 
-        public KiloWattHours(float value)
+        public Ampere(float value)
         {
             Value = (decimal)value;
         }
 
-        public bool Equals(KiloWattHours other)
+        public bool Equals(Ampere other)
         {
             return Value == other.Value;
         }
@@ -36,7 +36,7 @@ namespace TeslaCanBusInspector.ValueTypes
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
-            return obj is KiloWattHours && Equals((KiloWattHours)obj);
+            return obj is Ampere && Equals((Ampere)obj);
         }
 
         public override int GetHashCode()
@@ -44,14 +44,14 @@ namespace TeslaCanBusInspector.ValueTypes
             return Value.GetHashCode();
         }
 
-        public static implicit operator decimal(KiloWattHours valueType)
+        public static implicit operator decimal(Ampere valueType)
         {
             return valueType.Value;
         }
 
         public override string ToString()
         {
-            return Value.ToString();
+            return $"{Value:N2} A";
         }
 
         public string ToString(IFormatProvider formatProvider)

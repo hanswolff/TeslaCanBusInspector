@@ -11,7 +11,7 @@ namespace TeslaCanBusInspector.Models
         public ushort MessageTypeId => TypeId;
 
         public ChargeTotalType ChargeTotalType { get; set; }
-        public KiloWattHours ChargeTotal { get; }
+        public KiloWattHour ChargeTotal { get; }
         public decimal StateOfChargeMin { get; }
         public decimal StateOfChargeDisplayed { get; }
 
@@ -24,7 +24,7 @@ namespace TeslaCanBusInspector.Models
             payload.RequireBytes(8);
 
             DetermineChargeTotalType(payload);
-            ChargeTotal = new KiloWattHours((payload[4] + (payload[5] << 8) + (payload[6] << 16) + (payload[7] << 24)) / 1000.0m);
+            ChargeTotal = new KiloWattHour((payload[4] + (payload[5] << 8) + (payload[6] << 16) + (payload[7] << 24)) / 1000.0m);
             StateOfChargeMin = (payload[0] + ((payload[1] & 0x3) << 8)) / 10m;
             StateOfChargeDisplayed = (payload[1] >> 2) + ((payload[2] & 0xF) << 6) / 10.0m;
         }
@@ -49,7 +49,7 @@ namespace TeslaCanBusInspector.Models
     public interface IStateOfChargeMessage : ICanBusMessage
     {
         ChargeTotalType ChargeTotalType { get; }
-        KiloWattHours ChargeTotal { get; }
+        KiloWattHour ChargeTotal { get; }
         decimal StateOfChargeMin { get; }
         decimal StateOfChargeDisplayed { get; }
     }

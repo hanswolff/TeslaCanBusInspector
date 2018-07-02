@@ -8,7 +8,7 @@ namespace TeslaCanBusInspector.Models
         public const ushort TypeId = 0x256;
         public ushort MessageTypeId => TypeId;
 
-        public KilometersPerHour Speed { get; }
+        public KilometerPerHour Speed { get; }
 
         internal SpeedMessage()
         {
@@ -22,6 +22,6 @@ namespace TeslaCanBusInspector.Models
 
     public interface ISpeedMessage : ICanBusMessage
     {
-        KilometersPerHour Speed { get; }
+        KilometerPerHour Speed { get; }
     }
 }

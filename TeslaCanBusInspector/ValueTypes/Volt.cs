@@ -4,46 +4,39 @@ using System.Diagnostics.CodeAnalysis;
 namespace TeslaCanBusInspector.ValueTypes
 {
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
-    public struct Miles : IEquatable<Miles>, IEquatable<Kilometers>
+    public struct Volt : IEquatable<Volt>
     {
-        public const decimal MilesToKm = 1.609344m;
-
         public readonly decimal Value;
 
-        public Miles(int value)
+        public Volt(int value)
         {
             Value = value;
         }
 
-        public Miles(decimal value)
+        public Volt(decimal value)
         {
             Value = value;
         }
 
-        public Miles(double value)
+        public Volt(double value)
         {
             Value = (decimal)value;
         }
 
-        public Miles(float value)
+        public Volt(float value)
         {
             Value = (decimal)value;
         }
 
-        public bool Equals(Miles other)
+        public bool Equals(Volt other)
         {
             return Value == other.Value;
-        }
-
-        public bool Equals(Kilometers other)
-        {
-            return Equals((Miles) other);
         }
 
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
-            return obj is Miles && Equals((Miles)obj);
+            return obj is Volt && Equals((Volt)obj);
         }
 
         public override int GetHashCode()
@@ -51,24 +44,14 @@ namespace TeslaCanBusInspector.ValueTypes
             return Value.GetHashCode();
         }
 
-        public static explicit operator Miles(Kilometers kilometers)
-        {
-            return new Miles(kilometers / MilesToKm);
-        }
-
-        public static explicit operator Kilometers(Miles miles)
-        {
-            return new Kilometers(miles * MilesToKm);
-        }
-
-        public static implicit operator decimal(Miles valueType)
+        public static implicit operator decimal(Volt valueType)
         {
             return valueType.Value;
         }
 
         public override string ToString()
         {
-            return Value.ToString();
+            return $"{Value:N3} V";
         }
 
         public string ToString(IFormatProvider formatProvider)

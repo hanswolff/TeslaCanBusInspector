@@ -4,31 +4,31 @@ using System.Diagnostics.CodeAnalysis;
 namespace TeslaCanBusInspector.ValueTypes
 {
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
-    public struct KiloWatts : IEquatable<KiloWatts>
+    public struct KiloWatt : IEquatable<KiloWatt>
     {
         public readonly decimal Value;
 
-        public KiloWatts(int value)
+        public KiloWatt(int value)
         {
             Value = value;
         }
 
-        public KiloWatts(decimal value)
+        public KiloWatt(decimal value)
         {
             Value = value;
         }
 
-        public KiloWatts(double value)
+        public KiloWatt(double value)
         {
             Value = (decimal)value;
         }
 
-        public KiloWatts(float value)
+        public KiloWatt(float value)
         {
             Value = (decimal)value;
         }
 
-        public bool Equals(KiloWatts other)
+        public bool Equals(KiloWatt other)
         {
             return Value == other.Value;
         }
@@ -36,7 +36,7 @@ namespace TeslaCanBusInspector.ValueTypes
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
-            return obj is KiloWatts && Equals((KiloWatts)obj);
+            return obj is KiloWatt && Equals((KiloWatt)obj);
         }
 
         public override int GetHashCode()
@@ -44,24 +44,24 @@ namespace TeslaCanBusInspector.ValueTypes
             return Value.GetHashCode();
         }
 
-        public static explicit operator KiloWatts(Watts watts)
+        public static explicit operator KiloWatt(Watt watt)
         {
-            return new KiloWatts(watts / 1000m);
+            return new KiloWatt(watt / 1000m);
         }
 
-        public static explicit operator Watts(KiloWatts kiloWatts)
+        public static explicit operator Watt(KiloWatt kiloWatt)
         {
-            return new Watts(kiloWatts * 1000m);
+            return new Watt(kiloWatt * 1000m);
         }
 
-        public static implicit operator decimal(KiloWatts valueType)
+        public static implicit operator decimal(KiloWatt valueType)
         {
             return valueType.Value;
         }
 
         public override string ToString()
         {
-            return Value.ToString();
+            return $"{Value:N3} kW";
         }
 
         public string ToString(IFormatProvider formatProvider)

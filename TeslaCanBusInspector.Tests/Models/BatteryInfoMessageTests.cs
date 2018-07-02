@@ -16,7 +16,7 @@ namespace TeslaCanBusInspector.Tests.Models
             var message = new BatteryInfoMessage(_examplePayload);
 
             // Assert
-            message.BatteryCurrent.Should().Be(new Amps(0.1));
+            message.BatteryCurrent.Should().Be(new Ampere(0.1));
         }
         
         [Fact]
@@ -26,7 +26,7 @@ namespace TeslaCanBusInspector.Tests.Models
             var message = new BatteryInfoMessage(_examplePayload);
 
             // Assert
-            message.BatteryVoltage.Should().Be(new Volts(336.64));
+            message.BatteryVoltage.Should().Be(new Volt(336.64));
         }
                 
         [Fact]
@@ -36,7 +36,7 @@ namespace TeslaCanBusInspector.Tests.Models
             var message = new BatteryInfoMessage(_examplePayload);
 
             // Assert
-            message.BatteryPower.Should().Be(new Watts(33.664));
+            message.BatteryPower.Should().Be(new Watt(33.664));
         }
                         
         [Fact]

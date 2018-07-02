@@ -26,7 +26,7 @@ namespace TeslaCanBusInspector.Tests.Models
             var message = new DcDcInfoMessage(_examplePayload);
 
             // Assert
-            message.DcDcCurrent.Should().Be(new Amps(28));
+            message.DcDcCurrent.Should().Be(new Ampere(28));
         }
 
         [Fact]
@@ -36,7 +36,7 @@ namespace TeslaCanBusInspector.Tests.Models
             var message = new DcDcInfoMessage(_examplePayload);
 
             // Assert
-            message.DcDcInputPower.Should().Be(new Watts(416));
+            message.DcDcInputPower.Should().Be(new Watt(416));
         }
         
         [Fact]
@@ -46,7 +46,7 @@ namespace TeslaCanBusInspector.Tests.Models
             var message = new DcDcInfoMessage(_examplePayload);
 
             // Assert
-            message.DcDcOutputPower.Should().Be(new Watts(378));
+            message.DcDcOutputPower.Should().Be(new Watt(378));
         }
         
         [Fact]
@@ -56,7 +56,7 @@ namespace TeslaCanBusInspector.Tests.Models
             var message = new DcDcInfoMessage(_examplePayload);
 
             // Assert
-            message.DcDcVoltage.Should().Be(new Volts(13.5));
+            message.DcDcVoltage.Should().Be(new Volt(13.5));
         }
     }
 }

@@ -9,7 +9,7 @@ namespace TeslaCanBusInspector.Models
         public const ushort TypeId = 0x562;
         public ushort MessageTypeId => TypeId;
 
-        public Miles OdometerValue { get; }
+        public Mile OdometerValue { get; }
 
         internal OdometerMessage()
         {
@@ -19,12 +19,12 @@ namespace TeslaCanBusInspector.Models
         {
             payload.RequireBytes(4);
 
-            OdometerValue = new Miles((payload[0] + (payload[1] << 8) + (payload[2] << 16) + (payload[3] << 24)) / 1000.0m);
+            OdometerValue = new Mile((payload[0] + (payload[1] << 8) + (payload[2] << 16) + (payload[3] << 24)) / 1000.0m);
         }
     }
 
     public interface IOdometerMessage : ICanBusMessage
     {
-        Miles OdometerValue { get; }
+        Mile OdometerValue { get; }
     }
 }

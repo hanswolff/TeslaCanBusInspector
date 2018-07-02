@@ -4,31 +4,31 @@ using System.Diagnostics.CodeAnalysis;
 namespace TeslaCanBusInspector.ValueTypes
 {
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
-    public struct KilometersPerHour : IEquatable<KilometersPerHour>
+    public struct KilometerPerHour : IEquatable<KilometerPerHour>
     {
         public readonly decimal Value;
 
-        public KilometersPerHour(int value)
+        public KilometerPerHour(int value)
         {
             Value = value;
         }
 
-        public KilometersPerHour(decimal value)
+        public KilometerPerHour(decimal value)
         {
             Value = value;
         }
 
-        public KilometersPerHour(double value)
+        public KilometerPerHour(double value)
         {
             Value = (decimal)value;
         }
 
-        public KilometersPerHour(float value)
+        public KilometerPerHour(float value)
         {
             Value = (decimal)value;
         }
 
-        public bool Equals(KilometersPerHour other)
+        public bool Equals(KilometerPerHour other)
         {
             return Value == other.Value;
         }
@@ -36,7 +36,7 @@ namespace TeslaCanBusInspector.ValueTypes
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
-            return obj is KilometersPerHour && Equals((KilometersPerHour)obj);
+            return obj is KilometerPerHour && Equals((KilometerPerHour)obj);
         }
 
         public override int GetHashCode()
@@ -44,14 +44,14 @@ namespace TeslaCanBusInspector.ValueTypes
             return Value.GetHashCode();
         }
 
-        public static implicit operator decimal(KilometersPerHour valueType)
+        public static implicit operator decimal(KilometerPerHour valueType)
         {
             return valueType.Value;
         }
 
         public override string ToString()
         {
-            return Value.ToString();
+            return $"{Value:N1} km/h";;
         }
 
         public string ToString(IFormatProvider formatProvider)

@@ -16,7 +16,7 @@ namespace TeslaCanBusInspector.Tests.Models
             var message = new OdometerMessage(_examplePayload);
 
             // Assert
-            message.OdometerValue.Should().Be(new Miles(11297.179));
+            message.OdometerValue.Should().Be(new Mile(11297.179));
         }
 
         [Fact]
@@ -26,7 +26,7 @@ namespace TeslaCanBusInspector.Tests.Models
             var message = new OdometerMessage(_examplePayload);
 
             // Assert
-            ((Kilometers)message.OdometerValue).Should().Be(new Kilometers(18181.047240576m));
+            ((Kilometer)message.OdometerValue).Should().Be(new Kilometer(18181.047240576m));
         }
     }
 }
