@@ -57,7 +57,7 @@ namespace TeslaCanBusInspector.Tests.Models
             var message = new StateOfChargeMessage(_examplePayloadAc);
 
             // Assert
-            message.StateOfChargeMin.Should().Be(79.9m);
+            message.StateOfChargeMin.Should().Be(new Percent(79.9));
         }
 
         [Fact]
@@ -67,7 +67,7 @@ namespace TeslaCanBusInspector.Tests.Models
             var message = new StateOfChargeMessage(_examplePayloadAc );
 
             // Assert
-            message.StateOfChargeDisplayed.Should().Be(87.8m);
+            message.StateOfChargeDisplayed.Should().Be(new Percent(87.8));
         }
     }
 }

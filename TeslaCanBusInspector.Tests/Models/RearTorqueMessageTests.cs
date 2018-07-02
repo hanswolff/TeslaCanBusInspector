@@ -18,5 +18,15 @@ namespace TeslaCanBusInspector.Tests.Models
             // Assert
             message.RearTorque.Should().Be(new NewtonMeter(-33.50));
         }
+
+        [Fact]
+        public void WattPedal()
+        {
+            // Act      
+            var message = new RearTorqueMessage(_examplePayload);
+
+            // Assert
+            message.WattPedal.Should().Be(new Percent(6.80));
+        }
     }
 }

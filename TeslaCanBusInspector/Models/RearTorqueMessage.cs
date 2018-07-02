@@ -1,7 +1,6 @@
-﻿// ReSharper disable UnusedMember.Global
+﻿using TeslaCanBusInspector.ValueTypes;
 
-using TeslaCanBusInspector.ValueTypes;
-
+// ReSharper disable UnusedMember.Global
 namespace TeslaCanBusInspector.Models
 {
     public class RearTorqueMessage : IRearTorqueMessage
@@ -10,7 +9,7 @@ namespace TeslaCanBusInspector.Models
         public ushort MessageTypeId => TypeId;
 
         public NewtonMeter RearTorque { get; }
-        public decimal WattPedal { get; }
+        public Percent WattPedal { get; }
 
         internal RearTorqueMessage()
         {
@@ -21,13 +20,13 @@ namespace TeslaCanBusInspector.Models
             payload.RequireBytes(7);
 
             RearTorque = new NewtonMeter((payload[5] + ((payload[6] & 0x1F) << 8) - 512 * (payload[6] & 0x10)) * 0.25m);
-            WattPedal = payload[3] * 0.4m;
+            WattPedal = new Percent(payload[3] * 0.4m);
         }
     }
 
     public interface IRearTorqueMessage : ICanBusMessage
     {
         NewtonMeter RearTorque { get; }
-        decimal WattPedal { get; }
+        Percent WattPedal { get; }
     }
 }

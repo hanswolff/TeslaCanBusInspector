@@ -1,7 +1,6 @@
-﻿// ReSharper disable UnusedMember.Global
+﻿using TeslaCanBusInspector.ValueTypes;
 
-using TeslaCanBusInspector.ValueTypes;
-
+// ReSharper disable UnusedMember.Global
 namespace TeslaCanBusInspector.Models
 {
     public class ChargeDischargeTotalMessage : IChargeDischargeTotalMessage

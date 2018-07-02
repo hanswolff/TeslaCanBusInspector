@@ -12,8 +12,8 @@ namespace TeslaCanBusInspector.Models
 
         public ChargeTotalType ChargeTotalType { get; set; }
         public KiloWattHour ChargeTotal { get; }
-        public decimal StateOfChargeMin { get; }
-        public decimal StateOfChargeDisplayed { get; }
+        public Percent StateOfChargeMin { get; }
+        public Percent StateOfChargeDisplayed { get; }
 
         internal StateOfChargeMessage()
         {
@@ -25,8 +25,8 @@ namespace TeslaCanBusInspector.Models
 
             DetermineChargeTotalType(payload);
             ChargeTotal = new KiloWattHour((payload[4] + (payload[5] << 8) + (payload[6] << 16) + (payload[7] << 24)) / 1000.0m);
-            StateOfChargeMin = (payload[0] + ((payload[1] & 0x3) << 8)) / 10m;
-            StateOfChargeDisplayed = (payload[1] >> 2) + ((payload[2] & 0xF) << 6) / 10.0m;
+            StateOfChargeMin = new Percent((payload[0] + ((payload[1] & 0x3) << 8)) / 10m);
+            StateOfChargeDisplayed = new Percent((payload[1] >> 2) + ((payload[2] & 0xF) << 6) / 10.0m);
         }
 
         private void DetermineChargeTotalType(byte[] payload)
@@ -50,8 +50,8 @@ namespace TeslaCanBusInspector.Models
     {
         ChargeTotalType ChargeTotalType { get; }
         KiloWattHour ChargeTotal { get; }
-        decimal StateOfChargeMin { get; }
-        decimal StateOfChargeDisplayed { get; }
+        Percent StateOfChargeMin { get; }
+        Percent StateOfChargeDisplayed { get; }
     }
 
     [SuppressMessage("ReSharper", "InconsistentNaming")]
