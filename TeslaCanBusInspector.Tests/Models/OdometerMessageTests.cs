@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using TeslaCanBusInspector.Models;
+using TeslaCanBusInspector.ValueTypes;
 using Xunit;
 
 namespace TeslaCanBusInspector.Tests.Models
@@ -15,7 +16,7 @@ namespace TeslaCanBusInspector.Tests.Models
             var message = new OdometerMessage(_examplePayload);
 
             // Assert
-            message.OdometerValueMiles.Should().Be(11297.179M);
+            message.OdometerValue.Should().Be(new Miles(11297.179));
         }
 
         [Fact]
@@ -25,7 +26,7 @@ namespace TeslaCanBusInspector.Tests.Models
             var message = new OdometerMessage(_examplePayload);
 
             // Assert
-            message.OdometerValueKm.Should().Be(18181.047240576M);
+            ((Kilometers)message.OdometerValue).Should().Be(new Kilometers(18181.047240576m));
         }
     }
 }

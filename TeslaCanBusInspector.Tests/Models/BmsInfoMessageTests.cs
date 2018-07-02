@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using TeslaCanBusInspector.Models;
+using TeslaCanBusInspector.ValueTypes;
 using Xunit;
 
 namespace TeslaCanBusInspector.Tests.Models
@@ -15,7 +16,7 @@ namespace TeslaCanBusInspector.Tests.Models
             var message = new BmsInfoMessage(_examplePayload);
 
             // Assert
-            message.BmsMaxCharge.Should().Be(87.82m);
+            message.BmsMaxCharge.Should().Be(new KiloWatts(87.82));
         }
         
         [Fact]
@@ -25,7 +26,7 @@ namespace TeslaCanBusInspector.Tests.Models
             var message = new BmsInfoMessage(_examplePayload);
 
             // Assert
-            message.BmsMaxDischarge.Should().Be(340.25m);
+            message.BmsMaxDischarge.Should().Be(new KiloWatts(340.25));
         }
     }
 }

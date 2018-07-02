@@ -1,10 +1,14 @@
-﻿namespace TeslaCanBusInspector.Models
+﻿using TeslaCanBusInspector.ValueTypes;
+
+namespace TeslaCanBusInspector.Models
 {
     // ReSharper disable UnusedMember.Global
-    public class SpeedMessage : ICanBusMessage
+    public class SpeedMessage : ISpeedMessage
     {
         public const ushort TypeId = 0x256;
         public ushort MessageTypeId => TypeId;
+
+        public KilometersPerHour Speed { get; }
 
         internal SpeedMessage()
         {
@@ -14,5 +18,10 @@
         {
             // TODO: add code here
         }
+    }
+
+    public interface ISpeedMessage : ICanBusMessage
+    {
+        KilometersPerHour Speed { get; }
     }
 }

@@ -1,4 +1,7 @@
 ﻿// ReSharper disable UnusedMember.Global
+
+using TeslaCanBusInspector.ValueTypes;
+
 namespace TeslaCanBusInspector.Models
 {
     public class ChargeDischargeTotalMessage : IChargeDischargeTotalMessage
@@ -6,8 +9,8 @@ namespace TeslaCanBusInspector.Models
         public const ushort TypeId = 0x3D2;
         public ushort MessageTypeId => TypeId;
 
-        public decimal ChargeTotalKwh { get; }
-        public decimal DischargeTotalKwh { get; }
+        public KiloWattHours ChargeTotal { get; }
+        public KiloWattHours DischargeTotal { get; }
 
         internal ChargeDischargeTotalMessage()
         {
@@ -17,14 +20,14 @@ namespace TeslaCanBusInspector.Models
         {
             payload.RequireBytes(8);
 
-            ChargeTotalKwh = (payload[0] + (payload[1] << 8) + (payload[2] << 16) + (payload[3] << 24)) / 1000.0m;
-            DischargeTotalKwh = (payload[4] + (payload[5] << 8) + (payload[6] << 16) + (payload[7] << 24)) / 1000.0m;
+            ChargeTotal = new KiloWattHours((payload[0] + (payload[1] << 8) + (payload[2] << 16) + (payload[3] << 24)) / 1000.0m);
+            DischargeTotal = new KiloWattHours((payload[4] + (payload[5] << 8) + (payload[6] << 16) + (payload[7] << 24)) / 1000.0m);
         }
     }
 
     public interface IChargeDischargeTotalMessage : ICanBusMessage
     {
-        decimal ChargeTotalKwh { get; }
-        decimal DischargeTotalKwh { get; }
+        KiloWattHours ChargeTotal { get; }
+        KiloWattHours DischargeTotal { get; }
     }
 }

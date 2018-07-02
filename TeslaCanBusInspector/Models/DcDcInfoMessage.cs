@@ -1,4 +1,7 @@
 ﻿// ReSharper disable UnusedMember.Global
+
+using TeslaCanBusInspector.ValueTypes;
+
 namespace TeslaCanBusInspector.Models
 {
     public class DcDcInfoMessage : IDcDcInfoMessage
@@ -6,11 +9,11 @@ namespace TeslaCanBusInspector.Models
         public const ushort TypeId = 0x210;
         public ushort MessageTypeId => TypeId;
 
-        public byte DcDcCurrent { get; }
-        public decimal DcDcVoltage { get; }
+        public Amps DcDcCurrent { get; }
+        public Volts DcDcVoltage { get; }
         public decimal DcDcCoolantInlet { get; }
-        public ushort DcDcInputPowerWatts { get; }
-        public decimal DcDcOutputPowerWatts { get; }
+        public Watts DcDcInputPower { get; }
+        public Watts DcDcOutputPower { get; }
 
         internal DcDcInfoMessage()
         {
@@ -20,20 +23,20 @@ namespace TeslaCanBusInspector.Models
         {
             payload.RequireBytes(6);
 
-            DcDcCurrent = payload[4];
-            DcDcVoltage = payload[5] / 10.0m;
+            DcDcCurrent = new Amps(payload[4]);
+            DcDcVoltage = new Volts(payload[5] / 10.0m);
             DcDcCoolantInlet = (payload[2] - 2 * (payload[2] & 0x80)) / 2m + 40m;
-            DcDcInputPowerWatts = (ushort)(payload[3] << 4);
-            DcDcOutputPowerWatts = payload[4] * payload[5] / 10.0m;
+            DcDcInputPower = new Watts((ushort)(payload[3] << 4));
+            DcDcOutputPower = new Watts(payload[4] * payload[5] / 10.0m);
         }
     }
 
     public interface IDcDcInfoMessage : ICanBusMessage
     {
-        byte DcDcCurrent { get; }
-        decimal DcDcVoltage { get; }
+        Amps DcDcCurrent { get; }
+        Volts DcDcVoltage { get; }
         decimal DcDcCoolantInlet { get; }
-        ushort DcDcInputPowerWatts { get; }
-        decimal DcDcOutputPowerWatts { get; }
+        Watts DcDcInputPower { get; }
+        Watts DcDcOutputPower { get; }
     }
 }

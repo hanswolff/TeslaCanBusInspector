@@ -1,4 +1,7 @@
 ﻿// ReSharper disable UnusedMember.Global
+
+using TeslaCanBusInspector.ValueTypes;
+
 namespace TeslaCanBusInspector.Models
 {
     public class BmsInfoMessage : IBmsInfoMessage
@@ -6,8 +9,8 @@ namespace TeslaCanBusInspector.Models
         public const ushort TypeId = 0x232;
         public ushort MessageTypeId => TypeId;
 
-        public decimal BmsMaxCharge { get; }
-        public decimal BmsMaxDischarge { get; }
+        public KiloWatts BmsMaxCharge { get; }
+        public KiloWatts BmsMaxDischarge { get; }
 
         internal BmsInfoMessage()
         {
@@ -17,14 +20,14 @@ namespace TeslaCanBusInspector.Models
         {
             payload.RequireBytes(4);
 
-            BmsMaxCharge = (payload[0] + (payload[1] << 8)) / 100.0m;
-            BmsMaxDischarge = (payload[2] + (payload[3] << 8)) / 100.0m;
+            BmsMaxCharge = new KiloWatts((payload[0] + (payload[1] << 8)) / 100.0m);
+            BmsMaxDischarge = new KiloWatts((payload[2] + (payload[3] << 8)) / 100.0m);
         }
     }
 
     public interface IBmsInfoMessage : ICanBusMessage
     {
-        decimal BmsMaxCharge { get; }
-        decimal BmsMaxDischarge { get; }
+        KiloWatts BmsMaxCharge { get; }
+        KiloWatts BmsMaxDischarge { get; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using TeslaCanBusInspector.Models;
+using TeslaCanBusInspector.ValueTypes;
 using Xunit;
 
 namespace TeslaCanBusInspector.Tests.Models
@@ -15,7 +16,7 @@ namespace TeslaCanBusInspector.Tests.Models
             var message = new DcDcInfoMessage(_examplePayload);
 
             // Assert
-            message.DcDcCoolantInlet.Should().Be(25M);
+            message.DcDcCoolantInlet.Should().Be(25m);
         }
 
         [Fact]
@@ -25,27 +26,27 @@ namespace TeslaCanBusInspector.Tests.Models
             var message = new DcDcInfoMessage(_examplePayload);
 
             // Assert
-            message.DcDcCurrent.Should().Be(28);
+            message.DcDcCurrent.Should().Be(new Amps(28));
         }
 
         [Fact]
-        public void DcDcInputPowerWatts()
+        public void DcDcInputPower()
         {
             // Act      
             var message = new DcDcInfoMessage(_examplePayload);
 
             // Assert
-            message.DcDcInputPowerWatts.Should().Be(416);
+            message.DcDcInputPower.Should().Be(new Watts(416));
         }
         
         [Fact]
-        public void DcDcOutputPowerWatts()
+        public void DcDcOutputPower()
         {
             // Act      
             var message = new DcDcInfoMessage(_examplePayload);
 
             // Assert
-            message.DcDcOutputPowerWatts.Should().Be(378m);
+            message.DcDcOutputPower.Should().Be(new Watts(378));
         }
         
         [Fact]
@@ -55,7 +56,7 @@ namespace TeslaCanBusInspector.Tests.Models
             var message = new DcDcInfoMessage(_examplePayload);
 
             // Assert
-            message.DcDcVoltage.Should().Be(13.5m);
+            message.DcDcVoltage.Should().Be(new Volts(13.5));
         }
     }
 }

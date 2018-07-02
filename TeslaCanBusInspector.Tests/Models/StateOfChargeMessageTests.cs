@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using TeslaCanBusInspector.Models;
+using TeslaCanBusInspector.ValueTypes;
 using Xunit;
 
 namespace TeslaCanBusInspector.Tests.Models
@@ -30,23 +31,23 @@ namespace TeslaCanBusInspector.Tests.Models
         }
 
         [Fact]
-        public void ChargeTotalKwhAc()
+        public void ChargeTotalAc()
         {
             // Act      
             var message = new StateOfChargeMessage(_examplePayloadAc);
 
             // Assert
-            message.ChargeTotalKwh.Should().Be(1108.383m);
+            message.ChargeTotal.Should().Be(new KiloWattHours(1108.383));
         }
         
         [Fact]
-        public void ChargeTotalKwhDc()
+        public void ChargeTotalDc()
         {
             // Act      
             var message = new StateOfChargeMessage(_examplePayloadDc);
 
             // Assert
-            message.ChargeTotalKwh.Should().Be(3860.494m);
+            message.ChargeTotal.Should().Be(new KiloWattHours(3860.494));
         }
 
         [Fact]

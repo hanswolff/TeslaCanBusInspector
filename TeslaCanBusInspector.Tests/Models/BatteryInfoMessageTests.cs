@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using TeslaCanBusInspector.Models;
+using TeslaCanBusInspector.ValueTypes;
 using Xunit;
 
 namespace TeslaCanBusInspector.Tests.Models
@@ -15,7 +16,7 @@ namespace TeslaCanBusInspector.Tests.Models
             var message = new BatteryInfoMessage(_examplePayload);
 
             // Assert
-            message.BatteryCurrent.Should().Be(0.1M);
+            message.BatteryCurrent.Should().Be(new Amps(0.1));
         }
         
         [Fact]
@@ -25,17 +26,17 @@ namespace TeslaCanBusInspector.Tests.Models
             var message = new BatteryInfoMessage(_examplePayload);
 
             // Assert
-            message.BatteryVoltage.Should().Be(336.64m);
+            message.BatteryVoltage.Should().Be(new Volts(336.64));
         }
                 
         [Fact]
-        public void BatteryPowerWatts()
+        public void BatteryPower()
         {
             // Act      
             var message = new BatteryInfoMessage(_examplePayload);
 
             // Assert
-            message.BatteryPowerWatts.Should().Be(33.664m);
+            message.BatteryPower.Should().Be(new Watts(33.664));
         }
                         
         [Fact]
@@ -45,7 +46,7 @@ namespace TeslaCanBusInspector.Tests.Models
             var message = new BatteryInfoMessage(_examplePayload);
 
             // Assert
-            message.NegativeTerminal.Should().Be(92.3M);
+            message.NegativeTerminal.Should().Be(92.3m);
         }
     }
 }
