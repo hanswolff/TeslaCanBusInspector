@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-using TeslaCanBusInspector.Models;
+using TeslaCanBusInspector.Messages;
 
 namespace TeslaCanBusInspector
 {
