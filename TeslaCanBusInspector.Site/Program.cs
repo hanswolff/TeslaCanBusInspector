@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore;
+﻿using System.IO;
+using System.Reflection;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
 namespace TeslaCanBusInspector.Site
@@ -7,11 +9,22 @@ namespace TeslaCanBusInspector.Site
     {
         public static void Main(string[] args)
         {
-            CreateWebHostBuilder(args).Build().Run();
+            BuildWebHost(args).Run();
         }
 
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+        private static IWebHost BuildWebHost(string[] args)
+        {
+            var contentRoot = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            if (!Directory.Exists(Path.Combine(contentRoot, "wwwroot")))
+            {
+                contentRoot = Directory.GetCurrentDirectory();
+            }
+
+            return WebHost.CreateDefaultBuilder(args)
+                .UseKestrel()
+                .UseContentRoot(contentRoot)
+                .UseStartup<Startup>()
+                .Build();
+        }
     }
 }
