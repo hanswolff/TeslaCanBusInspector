@@ -2,7 +2,8 @@
   "name": "teslacanbusinspector",
   "version": "1.0.0",
   "dependencies": {
-    "bootstrap": "^4.1.1",
-    "jquery": "^2.2.4"
+    "bootstrap": "4.1.1",
+    "d3": "4.2.2",
+    "jquery": "2.2.4"
   }
 }

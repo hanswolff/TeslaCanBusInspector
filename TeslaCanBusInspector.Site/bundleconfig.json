@@ -6,7 +6,10 @@
     // An array of relative input file paths. Globbing patterns supported
     "inputFiles": [
       "wwwroot/css/site.css"
-    ]
+    ],
+    "minify": {
+      "enabled": false
+    }
   },
   {
     "outputFileName": "wwwroot/js/site.min.js",
@@ -36,7 +39,34 @@
       "node_modules/bootstrap/dist/js/bootstrap.js"
     ],
     "minify": {
-      "enabled": true
+      "enabled": false
+    }
+  },
+  {
+    "outputFileName": "wwwroot/lib/bootstrap.min.js",
+    "inputFiles": [
+      "node_modules/bootstrap/dist/js/bootstrap.min.js"
+    ],
+    "minify": {
+      "enabled": false
+    }
+  },
+  {
+    "outputFileName": "wwwroot/lib/d3.js",
+    "inputFiles": [
+      "node_modules/d3/build/d3.js"
+    ],
+    "minify": {
+      "enabled": false
+    }
+  },
+  {
+    "outputFileName": "wwwroot/lib/d3.min.js",
+    "inputFiles": [
+      "node_modules/d3/build/d3.min.js"
+    ],
+    "minify": {
+      "enabled": false
     }
   },
   {
@@ -45,7 +75,16 @@
       "node_modules/jquery/dist/jquery.js"
     ],
     "minify": {
-      "enabled": true
+      "enabled": false
+    }
+  },
+  {
+    "outputFileName": "wwwroot/lib/jquery.min.js",
+    "inputFiles": [
+      "node_modules/jquery/dist/jquery.min.js"
+    ],
+    "minify": {
+      "enabled": false
     }
   }
 ]

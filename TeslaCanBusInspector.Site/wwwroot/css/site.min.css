@@ -1,1 +1,9 @@
-body{padding-top:70px;padding-bottom:20px}.body-content{padding-left:15px;padding-right:15px}
+body {
+    padding-top: 70px;
+    padding-bottom: 20px;
+}
+
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
