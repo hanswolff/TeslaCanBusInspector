@@ -9,13 +9,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="wwwroot\lib\bootstrap.css">
+    <Content Update="wwwroot\*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\lib\bootstrap.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\jquery.js">
+    <Content Update="wwwroot\**\*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
