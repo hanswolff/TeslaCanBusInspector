@@ -7,3 +7,19 @@
     padding-left: 15px;
     padding-right: 15px;
 }
+
+#logo {
+    margin-right: 0.6em;
+}
+
+h1 {
+    font-size: 16pt;
+}
+
+h2 {
+    font-size: 14pt;
+}
+
+h3 {
+    font-size: 12pt;
+}
