@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TeslaCanBusInspector\TeslaCanBusInspector.csproj" />
+    <ProjectReference Include="..\TeslaCanBusInspector.Common\TeslaCanBusInspector.Common.csproj" />
   </ItemGroup>
 
 </Project>

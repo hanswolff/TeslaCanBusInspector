@@ -1,6 +1,6 @@
 ﻿using FluentAssertions;
-using TeslaCanBusInspector.Messages;
-using TeslaCanBusInspector.ValueTypes;
+using TeslaCanBusInspector.Common.Messages;
+using TeslaCanBusInspector.Common.ValueTypes;
 using Xunit;
 
 namespace TeslaCanBusInspector.Tests.Messages

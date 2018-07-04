@@ -1,8 +1,9 @@
 using System;
 using System.IO;
 using Newtonsoft.Json;
-using TeslaCanBusInspector.Messages;
-using TeslaCanBusInspector.ValueTypes;
+using TeslaCanBusInspector.Common;
+using TeslaCanBusInspector.Common.Messages;
+using TeslaCanBusInspector.Common.ValueTypes;
 
 namespace TeslaCanBusInspector
 {

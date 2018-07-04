@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using TeslaCanBusInspector.Common;
 using Xunit;
 
 namespace TeslaCanBusInspector.Tests
