@@ -25,7 +25,7 @@ namespace TeslaCanBusInspector.Common.Messages
             payload.RequireBytes(8);
 
             RearInverterVoltage = new Volt(payload[0] / 10m);
-            RearMechPower = new KiloWatt(((payload[2] + (payload[3] & 0x7) << 8) - 512m * (payload[3] & 0x4)) / 2m);
+            RearMechPower = new KiloWatt((payload[2] + ((payload[3] & 0x7) << 8) - 512 * (payload[3] & 0x4)) / 2m);
             RearDissipation = new KiloWatt(payload[1] * 125m / 1000m - 0.5m);
             RearInputPower = new KiloWatt(RearMechPower + RearDissipation);
             RearStatorCurrent = new Ampere(payload[4] + ((payload[5] & 0x7) << 8));
