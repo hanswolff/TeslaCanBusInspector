@@ -5,4 +5,4 @@ Tesla Model S CAN Bus Inspector (.NET Core 2.1)
 `// TODO: Note to self -> add some description here`
 
 For free Tesla Super Charging use my referral link: \
-http://ts.la/hans1645
+https://ts.la/dedimax23592
