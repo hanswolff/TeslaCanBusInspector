@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TeslaCanBusInspector", "Tes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TeslaCanBusInspector.Tests", "TeslaCanBusInspector.Tests\TeslaCanBusInspector.Tests.csproj", "{8F82F779-5A1B-413F-8266-99B6C9C75ACA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TeslaCanBusInspector.Site", "TeslaCanBusInspector.Site\TeslaCanBusInspector.Site.csproj", "{0D83B36A-1A54-425D-83BC-3B7387608F1C}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeslaCanBusInspector.Common", "TeslaCanBusInspector.Common\TeslaCanBusInspector.Common.csproj", "{7AF76E87-9B67-4310-B5F7-7488C09CECBF}"
 EndProject
 Global
@@ -25,10 +23,6 @@ Global
 		{8F82F779-5A1B-413F-8266-99B6C9C75ACA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F82F779-5A1B-413F-8266-99B6C9C75ACA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8F82F779-5A1B-413F-8266-99B6C9C75ACA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0D83B36A-1A54-425D-83BC-3B7387608F1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0D83B36A-1A54-425D-83BC-3B7387608F1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0D83B36A-1A54-425D-83BC-3B7387608F1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0D83B36A-1A54-425D-83BC-3B7387608F1C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7AF76E87-9B67-4310-B5F7-7488C09CECBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7AF76E87-9B67-4310-B5F7-7488C09CECBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7AF76E87-9B67-4310-B5F7-7488C09CECBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
