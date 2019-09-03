@@ -36,7 +36,7 @@ namespace TeslaCanBusInspector.Common.ValueTypes
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
-            return obj is Percent && Equals((Percent)obj);
+            return obj is Percent value && Equals(value);
         }
 
         public override int GetHashCode()

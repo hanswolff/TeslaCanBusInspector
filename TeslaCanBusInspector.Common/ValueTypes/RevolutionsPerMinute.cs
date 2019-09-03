@@ -36,7 +36,7 @@ namespace TeslaCanBusInspector.Common.ValueTypes
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
-            return obj is RevolutionsPerMinute && Equals((RevolutionsPerMinute)obj);
+            return obj is RevolutionsPerMinute value && Equals(value);
         }
 
         public override int GetHashCode()

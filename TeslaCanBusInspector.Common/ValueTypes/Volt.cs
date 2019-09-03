@@ -36,7 +36,7 @@ namespace TeslaCanBusInspector.Common.ValueTypes
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
-            return obj is Volt && Equals((Volt)obj);
+            return obj is Volt value && Equals(value);
         }
 
         public override int GetHashCode()

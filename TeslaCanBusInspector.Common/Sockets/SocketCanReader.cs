@@ -57,7 +57,7 @@ namespace TeslaCanBusInspector.Common.Sockets
 
         public void Dispose()
         {
-            _cts.Cancel();
+            _cts.Dispose();
             _tcpClient?.Dispose();
             _readTask?.Wait();
         }

@@ -36,7 +36,7 @@ namespace TeslaCanBusInspector.Common.ValueTypes
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
-            return obj is Celsius && Equals((Celsius)obj);
+            return obj is Celsius value && Equals(value);
         }
 
         public override int GetHashCode()

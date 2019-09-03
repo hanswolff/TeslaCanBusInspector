@@ -43,7 +43,7 @@ namespace TeslaCanBusInspector.Common.ValueTypes
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
-            return obj is Mile && Equals((Mile)obj);
+            return obj is Mile value && Equals(value);
         }
 
         public override int GetHashCode()
@@ -68,7 +68,7 @@ namespace TeslaCanBusInspector.Common.ValueTypes
 
         public override string ToString()
         {
-            return $"{Value:N2} miles";;
+            return $"{Value:N2} miles";
         }
 
         public string ToString(IFormatProvider formatProvider)

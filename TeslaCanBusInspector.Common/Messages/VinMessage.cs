@@ -22,7 +22,9 @@ namespace TeslaCanBusInspector.Common.Messages
             payload.RequireBytes(8);
 
             VinPartIndex = payload[0];
-            VinPartValue = Encoding.Default.GetString(new ArraySegment<byte>(payload, 1, payload.Length - 1)).TrimEnd('\0', ' ');
+
+            var segment = new ArraySegment<byte>(payload, 1, payload.Length - 1);
+            VinPartValue = Encoding.Default.GetString(segment).TrimEnd('\0', ' ');
         }
     }
 

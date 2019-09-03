@@ -36,7 +36,7 @@ namespace TeslaCanBusInspector.Common.ValueTypes
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
-            return obj is KilometerPerHour && Equals((KilometerPerHour)obj);
+            return obj is KilometerPerHour value && Equals(value);
         }
 
         public override int GetHashCode()
@@ -51,7 +51,7 @@ namespace TeslaCanBusInspector.Common.ValueTypes
 
         public override string ToString()
         {
-            return $"{Value:N1} km/h";;
+            return $"{Value:N1} km/h";
         }
 
         public string ToString(IFormatProvider formatProvider)

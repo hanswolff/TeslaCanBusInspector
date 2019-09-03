@@ -36,7 +36,7 @@ namespace TeslaCanBusInspector.Common.ValueTypes
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
-            return obj is KiloWatt && Equals((KiloWatt)obj);
+            return obj is KiloWatt value && Equals(value);
         }
 
         public override int GetHashCode()

@@ -36,7 +36,7 @@ namespace TeslaCanBusInspector.Common.ValueTypes
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
-            return obj is NewtonMeter && Equals((NewtonMeter)obj);
+            return obj is NewtonMeter value && Equals(value);
         }
 
         public override int GetHashCode()

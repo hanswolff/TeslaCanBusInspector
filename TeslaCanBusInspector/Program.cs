@@ -12,11 +12,16 @@ namespace TeslaCanBusInspector
         {
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
-            TestSockets().Wait();
+            //TestSockets().Wait();
 
-            if (args.Length == 0) return;
+            if (args.Length == 0)
+            {
+                Console.WriteLine("Missing command line arguments.");
+                return;
+            }
 
-            CanBusLogFileToJson.ReadFileToJson(args[0]);
+            var canFile = args[0];
+            CanBusLogFileToJson.ReadFileToJson(canFile);
         }
 
         private static async Task TestSockets()

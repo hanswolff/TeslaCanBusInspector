@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using TeslaCanBusInspector.Common.Messages;
@@ -11,10 +12,9 @@ namespace TeslaCanBusInspector.Common
 
         static CanBusMessageFactory()
         {
-            var messageTypes = Assembly.GetExecutingAssembly().GetTypes().Where(type =>
-                typeof(ICanBusMessage).IsAssignableFrom(type) && GetTypeConstructor(type) != null);
+            var messageTypes = GetMessageTypesFromAssembly(Assembly.GetExecutingAssembly());
 
-            foreach (var messageType in messageTypes.Distinct())
+            foreach (var messageType in messageTypes)
             {
                 var typeConstructor = GetTypeConstructor(messageType);
                 var payloadConstructor = GetPayloadConstructor(messageType);
@@ -33,6 +33,14 @@ namespace TeslaCanBusInspector.Common
 
                 MessageConstructors[model.MessageTypeId] = GetPayloadConstructor(messageType);
             }
+        }
+
+        private static IEnumerable<Type> GetMessageTypesFromAssembly(Assembly assembly)
+        {
+            return assembly.GetTypes().Where(type =>
+                !type.IsAbstract &&
+                typeof(ICanBusMessage).IsAssignableFrom(type) &&
+                GetTypeConstructor(type) != null).Distinct();
         }
 
         private static ConstructorInfo GetTypeConstructor(Type type)
@@ -54,13 +62,9 @@ namespace TeslaCanBusInspector.Common
                 throw new ArgumentNullException(nameof(payload));
             }
 
-            var constructor = MessageConstructors[messageTypeId];
-            if (constructor == null)
-            {
-                return (ICanBusMessage)MessageConstructors[UnknownMessage.TypeId].Invoke(new [] { payload });
-            }
+            var constructor = MessageConstructors[messageTypeId] ?? MessageConstructors[UnknownMessage.TypeId];
 
-            return (ICanBusMessage)constructor.Invoke(new [] { payload });
+            return (ICanBusMessage)constructor.Invoke(new object[] { payload });
         }
     }
 
