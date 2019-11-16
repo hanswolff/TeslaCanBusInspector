@@ -5,19 +5,9 @@ using Xunit;
 
 namespace TeslaCanBusInspector.Tests.Messages.Model3
 {
-    public class BatteryInfoModel3MessageTests
+    public class BatteryInfoMessageTests
     {
-        private readonly byte[] _examplePayload = { 0xB4, 0x87, 0xF2, 0xFF, 0xF4, 0x26, 0xFF, 0x0F };
-
-        [Fact]
-        public void BatteryVoltage()
-        {
-            // Act      
-            var message = new BatteryInfoMessage(_examplePayload);
-
-            // Assert
-            message.BatteryVoltage.Should().Be(new Volt(347.4m));
-        }
+        private readonly byte[] _examplePayload = { 0xA8, 0x87, 0xE2, 0xFF, 0xD3, 0x26, 0xFF, 0x0F };
 
         [Fact]
         public void BatteryCurrentRaw()
@@ -26,7 +16,7 @@ namespace TeslaCanBusInspector.Tests.Messages.Model3
             var message = new BatteryInfoMessage(_examplePayload);
 
             // Assert
-            message.BatteryCurrentRaw.Should().Be(new Ampere(498.6m));
+            message.BatteryCurrentRaw.Should().Be(new Ampere(3.05m));
         }
 
         [Fact]
@@ -36,7 +26,17 @@ namespace TeslaCanBusInspector.Tests.Messages.Model3
             var message = new BatteryInfoMessage(_examplePayload);
 
             // Assert
-            message.BatteryCurrentSmooth.Should().Be(new Ampere(327.54m));
+            message.BatteryCurrentSmooth.Should().Be(new Ampere(0.3m));
+        }
+
+        [Fact]
+        public void BatteryVoltage()
+        {
+            // Act      
+            var message = new BatteryInfoMessage(_examplePayload);
+
+            // Assert
+            message.BatteryVoltage.Should().Be(new Volt(347.28m));
         }
 
         [Fact]

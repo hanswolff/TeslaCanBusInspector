@@ -8,8 +8,8 @@ namespace TeslaCanBusInspector.Common
 {
     public class CanBusLogLineParser : ICanBusLogLineParser
     {
-        private static readonly Regex CanDumpFormat = new Regex(@"\(\d+.\d+\) [\w\d]+ [A-F0-9]{3}#([A-F0-9]{2})+", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-        private static readonly Regex ScanMyTeslaFormat = new Regex(@"[A-F0-9]{19}", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex CanDumpFormat = new Regex(@"^\(\d+.\d+\) [\w\d]+ [A-F0-9]{3}#([A-F0-9]{2})+$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex ScanMyTeslaFormat = new Regex(@"^[A-F0-9]{5,19}$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private static readonly Dictionary<Regex, Func<string, CanBusLogLine>> Actions =
             new Dictionary<Regex, Func<string, CanBusLogLine>>
@@ -39,7 +39,7 @@ namespace TeslaCanBusInspector.Common
             }
 
             line = line.Trim();
-            if (line.Length < 6)
+            if (line.Length < 5)
             {
                 return null;
             }
@@ -62,7 +62,10 @@ namespace TeslaCanBusInspector.Common
 
             foreach (var (regex, func) in Actions)
             {
-                if (!regex.IsMatch(line) || (result = func(line)) == null) continue;
+                if (!regex.IsMatch(line) || (result = func(line)) == null)
+                {
+                    continue;
+                }
 
                 _lastSuccessfulAction = func;
                 return result;
