@@ -7,7 +7,7 @@ namespace TeslaCanBusInspector.Tests.Messages
 {
     public class DcDcInfoMessageTests
     {
-        private readonly byte[] _examplePayload = new byte[] { 0x00, 0x00, 0xE2, 0x1A, 0x1C, 0x87, 0x00 };
+        private readonly byte[] _examplePayload = { 0x00, 0x00, 0xE2, 0x1A, 0x1C, 0x87, 0x00 };
 
         [Fact]
         public void DcDcCoolantInlet()

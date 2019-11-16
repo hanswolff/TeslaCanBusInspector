@@ -7,7 +7,7 @@ namespace TeslaCanBusInspector.Tests.Messages
 {
     public class BmsInfoMessageTests
     {
-        private readonly byte[] _examplePayload = new byte[] { 0x4E, 0x22, 0xE9, 0x84 };
+        private readonly byte[] _examplePayload = { 0x4E, 0x22, 0xE9, 0x84 };
 
         [Fact]
         public void BmsMaxCharge()

@@ -7,7 +7,7 @@ namespace TeslaCanBusInspector.Tests.Messages
 {
     public class RearTorqueMessageTests
     {
-        private readonly byte[] _examplePayload = new byte[] { 0x18, 0xB2, 0x10, 0x11, 0x0F, 0x7A, 0x3F, 0x08 };
+        private readonly byte[] _examplePayload = { 0x18, 0xB2, 0x10, 0x11, 0x0F, 0x7A, 0x3F, 0x08 };
 
         [Fact]
         public void RearTorque()

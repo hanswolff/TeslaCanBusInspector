@@ -7,7 +7,7 @@ namespace TeslaCanBusInspector.Tests.Messages
 {
     public class FrontMechPowerMessageTests
     {
-        private readonly byte[] _examplePayload = new byte[] { 0x87, 0x07, 0xFD, 0x07, 0x43, 0x48, 0x09, 0x00 };
+        private readonly byte[] _examplePayload = { 0x87, 0x07, 0xFD, 0x07, 0x43, 0x48, 0x09, 0x00 };
 
         [Fact]
         public void FrontMechPower()
@@ -16,7 +16,7 @@ namespace TeslaCanBusInspector.Tests.Messages
             var message = new FrontMechPowerMessage(_examplePayload);
 
             // Assert
-            message.FrontMechPower.Should().Be(new KiloWatt(-1));
+            message.FrontMechPower.Should().Be(new KiloWatt(-1.5));
         }
 
         [Fact]
@@ -46,7 +46,7 @@ namespace TeslaCanBusInspector.Tests.Messages
             var message = new FrontMechPowerMessage(_examplePayload);
 
             // Assert
-            message.FrontInputPower.Should().Be(new KiloWatt(-0.625));
+            message.FrontInputPower.Should().Be(new KiloWatt(-1.125));
         }
 
         [Fact]

@@ -7,7 +7,7 @@ namespace TeslaCanBusInspector.Tests.Messages
 {
     public class OdometerMessageTests
     {
-        private readonly byte[] _examplePayload = new byte[] { 0x9B, 0x61, 0xAC, 0x00 };
+        private readonly byte[] _examplePayload = { 0x9B, 0x61, 0xAC, 0x00 };
 
         [Fact]
         public void OdometerValueMiles()

@@ -7,7 +7,7 @@ namespace TeslaCanBusInspector.Tests.Messages
 {
     public class BatteryInfoMessageTests
     {
-        private readonly byte[] _examplePayload = new byte[] { 0x80, 0x83, 0x0F, 0xA7, 0x20, 0x4E, 0xFF, 0x03 };
+        private readonly byte[] _examplePayload = { 0x80, 0x83, 0x0F, 0xA7, 0x20, 0x4E, 0xFF, 0x03 };
 
         [Fact]
         public void BatteryCurrent()

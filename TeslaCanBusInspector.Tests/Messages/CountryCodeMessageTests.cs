@@ -6,7 +6,7 @@ namespace TeslaCanBusInspector.Tests.Messages
 {
     public class CountryCodeMessageTests
     {
-        private readonly byte[] _examplePayload = new byte[] { 0x44, 0x45, 0x70, 0, 0, 0, 0, 0 };
+        private readonly byte[] _examplePayload = { 0x44, 0x45, 0x70, 0, 0, 0, 0, 0 };
 
         [Fact]
         public void Germany()

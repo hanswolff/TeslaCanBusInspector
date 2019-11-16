@@ -7,7 +7,7 @@ namespace TeslaCanBusInspector.Tests.Messages
 {
     public class PackInfoMessageTests
     {
-        private readonly byte[] _examplePayload = new byte[] { 0xCE, 0xB6, 0x08, 0xE2, 0x8B, 0x00, 0xA0, 0x1C };
+        private readonly byte[] _examplePayload = { 0xCE, 0xB6, 0x08, 0xE2, 0x8B, 0x00, 0xA0, 0x1C };
 
         [Fact]
         public void EnergyBuffer()

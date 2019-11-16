@@ -7,7 +7,7 @@ namespace TeslaCanBusInspector.Tests.Messages
 {
     public class RearMotorRpmMessageTests
     {
-        private readonly byte[] _examplePayload = new byte[] { 0x05, 0x20, 0x04, 0x80, 0xB3, 0x00, 0x00, 0x63 };
+        private readonly byte[] _examplePayload = { 0x05, 0x20, 0x04, 0x80, 0xB3, 0x00, 0x00, 0x63 };
 
         [Fact]
         public void RearRpm()

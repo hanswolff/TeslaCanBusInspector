@@ -6,7 +6,7 @@ namespace TeslaCanBusInspector.Tests.Messages
 {
     public class SteeringAngleMessageTests
     {
-        private readonly byte[] _examplePayload = new byte[] { 0x20, 0x6E, 0x20, 0x00, 0x04, 0xFF, 0x20, 0x9F };
+        private readonly byte[] _examplePayload = { 0x20, 0x6E, 0x20, 0x00, 0x04, 0xFF, 0x20, 0x9F };
 
         [Fact]
         public void SteeringAngleDegrees()

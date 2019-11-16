@@ -7,7 +7,7 @@ namespace TeslaCanBusInspector.Tests.Messages
 {
     public class FrontTorqueMessageTests
     {
-        private readonly byte[] _examplePayload = new byte[] { 0x00, 0x04, 0x00, 0x00, 0x08, 0xEE, 0xC0, 0x8F };
+        private readonly byte[] _examplePayload = { 0x00, 0x04, 0x00, 0x00, 0x08, 0xEE, 0xC0, 0x8F };
 
         [Fact]
         public void FrontTorque()
