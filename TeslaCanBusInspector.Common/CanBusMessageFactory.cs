@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using TeslaCanBusInspector.Common.Messages;
+using TeslaCanBusInspector.Common.Messages.ModelS;
 
 namespace TeslaCanBusInspector.Common
 {
     public class CanBusMessageFactory : ICanBusMessageFactory
     {
-        private static readonly ConstructorInfo[] MessageConstructors = new ConstructorInfo[ushort.MaxValue];
+        private static readonly ConstructorInfo[] MessageConstructorsModelS = new ConstructorInfo[ushort.MaxValue];
+        private static readonly ConstructorInfo[] MessageConstructorsModelX = new ConstructorInfo[ushort.MaxValue];
+        private static readonly ConstructorInfo[] MessageConstructorsModel3 = new ConstructorInfo[ushort.MaxValue];
 
         static CanBusMessageFactory()
         {
@@ -25,14 +28,32 @@ namespace TeslaCanBusInspector.Common
 
                 var model = (ICanBusMessage)typeConstructor.Invoke(null);
 
-                var existingConstructor = MessageConstructors[model.MessageTypeId];
-                if (existingConstructor != null)
+                if (model.CarType.HasFlag(CarType.ModelS))
                 {
-                    throw new InvalidOperationException($"Colliding message type IDs: {model.MessageTypeId:X}");
+                    AssignMessageType(MessageConstructorsModelS, messageType, model);
                 }
 
-                MessageConstructors[model.MessageTypeId] = GetPayloadConstructor(messageType);
+                if (model.CarType.HasFlag(CarType.ModelX))
+                {
+                    AssignMessageType(MessageConstructorsModelX, messageType, model);
+                }
+
+                if (model.CarType.HasFlag(CarType.Model3))
+                {
+                    AssignMessageType(MessageConstructorsModel3, messageType, model);
+                }
             }
+        }
+
+        private static void AssignMessageType(ConstructorInfo[] constructors, Type messageType, ICanBusMessage model)
+        {
+            var existingConstructor = constructors[model.MessageTypeId];
+            if (existingConstructor != null)
+            {
+                throw new InvalidOperationException($"Colliding message type IDs: {model.MessageTypeId:X}");
+            }
+
+            constructors[model.MessageTypeId] = GetPayloadConstructor(messageType);
         }
 
         private static IEnumerable<Type> GetMessageTypesFromAssembly(Assembly assembly)
@@ -55,21 +76,37 @@ namespace TeslaCanBusInspector.Common
                 .FirstOrDefault(ci => ci.GetParameters().Length == 1 && ci.GetParameters()[0].ParameterType == typeof(byte[]));
         }
 
-        public ICanBusMessage Create(ushort messageTypeId, byte[] payload)
+        public ICanBusMessage Create(CarType carType, ushort messageTypeId, byte[] payload)
         {
             if (payload == null)
             {
                 throw new ArgumentNullException(nameof(payload));
             }
 
-            var constructor = MessageConstructors[messageTypeId] ?? MessageConstructors[UnknownMessage.TypeId];
+            var array = GetConstructorInfos(carType);
+            var constructor = array[messageTypeId] ?? array[UnknownMessage.TypeId];
 
             return (ICanBusMessage)constructor.Invoke(new object[] { payload });
+        }
+
+        private static ConstructorInfo[] GetConstructorInfos(CarType carType)
+        {
+            switch (carType)
+            {
+                case CarType.ModelS:
+                    return MessageConstructorsModelS;
+                case CarType.ModelX:
+                    return MessageConstructorsModelX;
+                case CarType.Model3:
+                    return MessageConstructorsModel3;
+            }
+
+            throw new InvalidOperationException("Invalid car type: " + carType);
         }
     }
 
     public interface ICanBusMessageFactory
     {
-        ICanBusMessage Create(ushort messageTypeId, byte[] payload);
+        ICanBusMessage Create(CarType carType, ushort messageTypeId, byte[] payload);
     }
 }

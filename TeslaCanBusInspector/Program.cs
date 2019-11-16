@@ -2,6 +2,7 @@ using System;
 using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
+using TeslaCanBusInspector.Common;
 using TeslaCanBusInspector.Common.Sockets;
 
 namespace TeslaCanBusInspector
@@ -21,7 +22,7 @@ namespace TeslaCanBusInspector
             }
 
             var canFile = args[0];
-            CanBusLogFileToJson.ReadFileToJson(canFile);
+            CanBusLogFileToJson.ReadFileToJson(CarType.Model3, canFile);
         }
 
         private static async Task TestSockets()

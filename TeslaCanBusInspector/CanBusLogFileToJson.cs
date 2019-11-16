@@ -3,13 +3,14 @@ using System.IO;
 using Newtonsoft.Json;
 using TeslaCanBusInspector.Common;
 using TeslaCanBusInspector.Common.Messages;
+using TeslaCanBusInspector.Common.Messages.ModelS;
 using TeslaCanBusInspector.Common.ValueTypes;
 
 namespace TeslaCanBusInspector
 {
     public class CanBusLogFileToJson
     {
-        public static void ReadFileToJson(string fileName)
+        public static void ReadFileToJson(CarType carType, string fileName)
         {
             var parser = new CanBusLogLineParser();
             var messageFactory = new CanBusMessageFactory();
@@ -30,11 +31,10 @@ namespace TeslaCanBusInspector
                     var parsedLine = parser.TryParseLine(line);
                     if (parsedLine == null)
                     {
-                        Console.Error.WriteLine("Could not parse line: " + line);
                         continue;
                     }
 
-                    var message = messageFactory.Create(parsedLine.MessageTypeId, parsedLine.Payload);
+                    var message = messageFactory.Create(carType, parsedLine.MessageTypeId, parsedLine.Payload);
                     if (message is UnknownMessage) continue;
 
                     var json = JsonConvert.SerializeObject(message, jsonSerializerSettings);

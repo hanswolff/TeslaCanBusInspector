@@ -1,18 +1,78 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace TeslaCanBusInspector.Common
 {
     public class CanBusLogLineParser : ICanBusLogLineParser
     {
+        private static readonly Regex CanDumpFormat = new Regex(@"\(\d+.\d+\) [\w\d]+ [A-F0-9]{3}#([A-F0-9]{2})+", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex ScanMyTeslaFormat = new Regex(@"[A-F0-9]{19}", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
+        private static readonly Dictionary<Regex, Func<string, CanBusLogLine>> Actions =
+            new Dictionary<Regex, Func<string, CanBusLogLine>>
+            {
+                {CanDumpFormat, TryParseLineCanDumpLine},
+                {ScanMyTeslaFormat, TryParseLineScanMyTeslaLine}
+            };
+
+        private static readonly HashSet<string> SkipLines = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        {
+            "ATCF 000",
+            "ATCM 000",
+            "BUFFER",
+            "BUFFER FULL",
+            "Adapter error ?",
+            "Connecting to car...",
+            "Using ELM327 command set"
+        };
+
+        private Func<string, CanBusLogLine> _lastSuccessfulAction;
+
         public CanBusLogLine TryParseLine(string line)
         {
-            if (string.IsNullOrEmpty(line))
+            if (string.IsNullOrWhiteSpace(line))
             {
                 return null;
             }
 
+            line = line.Trim();
+            if (line.Length < 6)
+            {
+                return null;
+            }
+
+            if (SkipLines.Contains(line))
+            {
+                return null;
+            }
+
+            return TryParseTrimmedLine(line);
+        }
+
+        private CanBusLogLine TryParseTrimmedLine(string line)
+        {
+            CanBusLogLine result;
+            if (_lastSuccessfulAction != null && (result = _lastSuccessfulAction(line)) != null)
+            {
+                return result;
+            }
+
+            foreach (var (regex, func) in Actions)
+            {
+                if (!regex.IsMatch(line) || (result = func(line)) == null) continue;
+
+                _lastSuccessfulAction = func;
+                return result;
+            }
+
+            return null;
+        }
+
+        private static CanBusLogLine TryParseLineCanDumpLine(string line)
+        {
             var parts = line.Trim().Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length != 3)
             {
@@ -38,6 +98,23 @@ namespace TeslaCanBusInspector.Common
             }
 
             return new CanBusLogLine(unixTimestamp, parts[1], messageTypeId, StringToByteArray(messagePayloadParts[1]));
+        }
+
+        private static CanBusLogLine TryParseLineScanMyTeslaLine(string line)
+        {
+            if (line.Length != 19)
+            {
+                return null;
+            }
+
+            var messageTypeHex = line.Substring(0, 3);
+            if (!ushort.TryParse(messageTypeHex, NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture,
+                out var messageTypeId))
+            {
+                return null;
+            }
+
+            return new CanBusLogLine(0, null, messageTypeId, StringToByteArray(line.Substring(3)));
         }
 
         private static byte[] StringToByteArray(string hex)
