@@ -38,15 +38,5 @@ namespace TeslaCanBusInspector.Tests.Messages.Model3
             // Assert
             message.BatteryVoltage.Should().Be(new Volt(347.28m));
         }
-
-        [Fact]
-        public void ChargeTimeRemaining()
-        {
-            // Act      
-            var message = new BatteryInfoMessage(_examplePayload);
-
-            // Assert
-            message.ChargeTimeRemaining.TotalMinutes.Should().Be(1920.0);
-        }
     }
 }

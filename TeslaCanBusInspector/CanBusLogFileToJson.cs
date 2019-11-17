@@ -3,7 +3,6 @@ using System.IO;
 using Newtonsoft.Json;
 using TeslaCanBusInspector.Common;
 using TeslaCanBusInspector.Common.Messages;
-using TeslaCanBusInspector.Common.Messages.ModelS;
 using TeslaCanBusInspector.Common.ValueTypes;
 
 namespace TeslaCanBusInspector

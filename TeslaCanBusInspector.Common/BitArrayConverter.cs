@@ -56,13 +56,12 @@ namespace TeslaCanBusInspector.Common
 
             var source = new BitArray(bytes);
             var dest = new BitArray(maxBits);
-            var destOffset = maxBits - bitLength;
 
             for (var i = 0; i < bitLength; i++)
             {
                 if (source.Get(bitOffset + i))
                 {
-                    dest.Set(destOffset + i, true);
+                    dest.Set(i, true);
                 }
             }
 
