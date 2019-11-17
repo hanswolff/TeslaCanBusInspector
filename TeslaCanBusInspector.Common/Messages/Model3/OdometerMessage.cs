@@ -1,5 +1,4 @@
 ﻿using System;
-using TeslaCanBusInspector.Common.Messages.ModelS;
 using TeslaCanBusInspector.Common.ValueTypes;
 
 // ReSharper disable UnusedMember.Global

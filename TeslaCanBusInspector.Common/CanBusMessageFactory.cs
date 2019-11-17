@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using TeslaCanBusInspector.Common.Messages;
-using TeslaCanBusInspector.Common.Messages.ModelS;
 
 namespace TeslaCanBusInspector.Common
 {

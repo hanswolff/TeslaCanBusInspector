@@ -51,7 +51,7 @@ namespace TeslaCanBusInspector.Common.ValueTypes
 
         public override string ToString()
         {
-            return $"{Value:N0} rpm";
+            return $"{Value:N1} rpm";
         }
 
         public string ToString(IFormatProvider formatProvider)

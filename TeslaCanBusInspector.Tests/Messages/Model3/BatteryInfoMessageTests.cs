@@ -26,7 +26,7 @@ namespace TeslaCanBusInspector.Tests.Messages.Model3
             var message = new BatteryInfoMessage(_examplePayload);
 
             // Assert
-            message.BatteryCurrentSmooth.Should().Be(new Ampere(0.3m));
+            message.BatteryCurrentSmooth.Should().Be(new Ampere(0.6m));
         }
 
         [Fact]

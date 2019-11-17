@@ -1,4 +1,4 @@
-﻿namespace TeslaCanBusInspector.Common.Messages.ModelS
+﻿namespace TeslaCanBusInspector.Common.Messages
 {
     public interface ICanBusMessage
     {

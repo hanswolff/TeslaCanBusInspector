@@ -2,7 +2,7 @@
   "profiles": {
     "TeslaCanBusInspector": {
       "commandName": "Project",
-      "commandLineArgs": "D:\\candump.log"
+      "commandLineArgs": "C:\\Temp\\candump.log"
     }
   }
 }

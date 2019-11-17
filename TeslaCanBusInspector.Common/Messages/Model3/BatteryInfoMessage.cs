@@ -1,5 +1,4 @@
 ﻿using System;
-using TeslaCanBusInspector.Common.Messages.ModelS;
 using TeslaCanBusInspector.Common.ValueTypes;
 
 // ReSharper disable UnusedMember.Global
@@ -24,10 +23,10 @@ namespace TeslaCanBusInspector.Common.Messages.Model3
         public BatteryInfoMessage(byte[] payload)
         {
             payload.RequireBytes(8);
-            BatteryVoltage = new Volt(BitConverter.ToUInt16(payload, 0) / 100.0m);
-            BatteryCurrentSmooth = new Ampere(BitConverter.ToInt16(payload, 2) * -0.01m);
-            BatteryCurrentRaw = new Ampere(BitConverter.ToInt16(payload, 4) * -0.05m + 500m);
-            ChargeTimeRemaining = TimeSpan.FromMinutes(payload[7] << 8 + payload[6]);
+            BatteryVoltage = new Volt(BitArrayConverter.ToUInt16(payload, 0, 16) / 100.0m);
+            BatteryCurrentSmooth = new Ampere(BitArrayConverter.ToInt16(payload, 16, 15) * -0.01m);
+            BatteryCurrentRaw = new Ampere(BitArrayConverter.ToInt16(payload, 32, 16) * -0.05m + 500m);
+            ChargeTimeRemaining = TimeSpan.FromMinutes(BitArrayConverter.ToUInt16(payload, 48, 12));
         }
     }
 
