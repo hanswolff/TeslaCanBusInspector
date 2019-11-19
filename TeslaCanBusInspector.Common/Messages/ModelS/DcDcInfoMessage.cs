@@ -7,9 +7,8 @@ namespace TeslaCanBusInspector.Common.Messages.ModelS
     public class DcDcInfoMessage : IDcDcInfoMessage
     {
         public CarType CarType => CarType.ModelS | CarType.ModelX;
-
-        public const ushort TypeId = 0x210;
-        public ushort MessageTypeId => TypeId;
+        public ushort MessageTypeId => 0x210;
+        public byte RequireBytes => 6;
 
         public Ampere DcDcCurrent { get; }
         public Volt DcDcVoltage { get; }
@@ -23,7 +22,7 @@ namespace TeslaCanBusInspector.Common.Messages.ModelS
 
         public DcDcInfoMessage(byte[] payload)
         {
-            payload.RequireBytes(6);
+            payload.RequireBytes(RequireBytes);
 
             DcDcCurrent = new Ampere(payload[4]);
             DcDcVoltage = new Volt(payload[5] / 10.0m);

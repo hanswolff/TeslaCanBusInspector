@@ -7,9 +7,8 @@ namespace TeslaCanBusInspector.Common.Messages.Model3
     public class FullBatteryCapacityMessage : IFullBatteryCapacityMessage
     {
         public CarType CarType => CarType.Model3;
-
-        public const ushort TypeId = 0x352;
-        public ushort MessageTypeId => TypeId;
+        public ushort MessageTypeId => 0x352;
+        public byte RequireBytes => 8;
 
         public KiloWattHour FullBatteryCapacity { get; }
         public KiloWattHour RemainingBatteryCapacity { get; }
@@ -24,7 +23,7 @@ namespace TeslaCanBusInspector.Common.Messages.Model3
 
         public FullBatteryCapacityMessage(byte[] payload)
         {
-            payload.RequireBytes(8);
+            payload.RequireBytes(RequireBytes);
 
             FullBatteryCapacity = new KiloWattHour(BitArrayConverter.ToUInt16(payload, 0, 10) * 0.1m);
             RemainingBatteryCapacity = new KiloWattHour(BitArrayConverter.ToUInt16(payload, 10, 10) * 0.1m);

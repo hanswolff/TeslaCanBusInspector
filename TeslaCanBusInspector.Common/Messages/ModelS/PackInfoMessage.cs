@@ -6,9 +6,8 @@ namespace TeslaCanBusInspector.Common.Messages.ModelS
     public class PackInfoMessage : IPackInfoMessage
     {
         public CarType CarType => CarType.ModelS | CarType.ModelX;
-
-        public const ushort TypeId = 0x382;
-        public ushort MessageTypeId => TypeId;
+        public ushort MessageTypeId => 0x382;
+        public byte RequireBytes => 8;
 
         public KiloWattHour EnergyBuffer { get; }
         public KiloWattHour ExpectedRemaining { get; }
@@ -23,7 +22,7 @@ namespace TeslaCanBusInspector.Common.Messages.ModelS
 
         public PackInfoMessage(byte[] payload)
         {
-            payload.RequireBytes(8);
+            payload.RequireBytes(RequireBytes);
 
             EnergyBuffer = new KiloWattHour(((payload[6] >> 2) + (payload[7] & 0x03) * 64) * 0.1m);
             ExpectedRemaining = new KiloWattHour(((payload[2] >> 4) + (payload[3] & 0x3F) << 4) * 0.1m);

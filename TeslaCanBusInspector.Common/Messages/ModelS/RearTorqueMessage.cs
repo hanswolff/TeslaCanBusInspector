@@ -6,9 +6,8 @@ namespace TeslaCanBusInspector.Common.Messages.ModelS
     public class RearTorqueMessage : IRearTorqueMessage
     {
         public CarType CarType => CarType.ModelS | CarType.ModelX;
-
-        public const ushort TypeId = 0x154;
-        public ushort MessageTypeId => TypeId;
+        public ushort MessageTypeId => 0x154;
+        public byte RequireBytes => 7;
 
         public NewtonMeter RearTorque { get; }
         public Percent WattPedal { get; }
@@ -19,7 +18,7 @@ namespace TeslaCanBusInspector.Common.Messages.ModelS
 
         public RearTorqueMessage(byte[] payload)
         {
-            payload.RequireBytes(7);
+            payload.RequireBytes(RequireBytes);
 
             RearTorque = new NewtonMeter((payload[5] + ((payload[6] & 0x1F) << 8) - 512 * (payload[6] & 0x10)) * 0.25m);
             WattPedal = new Percent(payload[3] * 0.4m);

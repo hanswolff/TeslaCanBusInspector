@@ -9,6 +9,7 @@ namespace TeslaCanBusInspector.Common.Messages
 
         public const ushort TypeId = 0x0;
         public ushort MessageTypeId => TypeId;
+        public byte RequireBytes => 0;
 
         public byte[] Payload { get; }
 

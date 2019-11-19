@@ -6,9 +6,8 @@ namespace TeslaCanBusInspector.Common.Messages.ModelS
     public class FrontMotorRpmMessage : IFrontMotorRpmMessage
     {
         public CarType CarType => CarType.ModelS | CarType.ModelX;
-
-        public const ushort TypeId = 0x115;
-        public ushort MessageTypeId => TypeId;
+        public ushort MessageTypeId => 0x115;
+        public byte RequireBytes => 6;
 
         public RevolutionsPerMinute FrontRpm { get; }
 
@@ -18,7 +17,7 @@ namespace TeslaCanBusInspector.Common.Messages.ModelS
 
         public FrontMotorRpmMessage(byte[] payload)
         {
-            payload.RequireBytes(6);
+            payload.RequireBytes(RequireBytes);
 
             FrontRpm = new RevolutionsPerMinute(payload[4] + (payload[5] << 8) - 512 * (payload[5] & 0x80));
         }

@@ -4,9 +4,8 @@ namespace TeslaCanBusInspector.Common.Messages.ModelS
     public class BrakePedalPositionMessage : IBrakePedalPositionMessage
     {
         public CarType CarType => CarType.ModelS | CarType.ModelX;
-
-        public const ushort TypeId = 0x168;
-        public ushort MessageTypeId => TypeId;
+        public ushort MessageTypeId => 0x168;
+        public byte RequireBytes => 2;
 
         public byte BrakePedalPositionPercent { get; }
 
@@ -16,7 +15,7 @@ namespace TeslaCanBusInspector.Common.Messages.ModelS
 
         public BrakePedalPositionMessage(byte[] payload)
         {
-            payload.RequireBytes(2);
+            payload.RequireBytes(RequireBytes);
 
             BrakePedalPositionPercent = (byte)(payload[0] + (payload[1] << 8) - 3239);
         }

@@ -6,9 +6,8 @@ namespace TeslaCanBusInspector.Common.Messages.ModelS
     public class FrontMechPowerMessage : IFrontMechPowerMessage
     {
         public CarType CarType => CarType.ModelS | CarType.ModelX;
-
-        public const ushort TypeId = 0x2E5;
-        public ushort MessageTypeId => TypeId;
+        public ushort MessageTypeId => 0x2E5;
+        public byte RequireBytes => 8;
 
         public KiloWatt FrontMechPower { get; }
         public KiloWatt FrontDissipation { get; }
@@ -22,7 +21,7 @@ namespace TeslaCanBusInspector.Common.Messages.ModelS
 
         public FrontMechPowerMessage(byte[] payload)
         {
-            payload.RequireBytes(8);
+            payload.RequireBytes(RequireBytes);
 
             FrontMechPower = new KiloWatt((payload[2] + ((payload[3] & 0x7) << 8) - 512 * (payload[3] & 0x4)) / 2m);
             FrontDissipation = new KiloWatt(payload[1] * 125m / 1000m - 0.5m);

@@ -6,9 +6,8 @@ namespace TeslaCanBusInspector.Common.Messages.ModelS
     public class CountryCodeMessage : ICountryCodeMessage
     {
         public CarType CarType => CarType.ModelS | CarType.ModelX;
-
-        public const ushort TypeId = 0x398;
-        public ushort MessageTypeId => TypeId;
+        public ushort MessageTypeId => 0x398;
+        public byte RequireBytes => 2;
 
         public string CountryCode { get; }
 
@@ -18,7 +17,7 @@ namespace TeslaCanBusInspector.Common.Messages.ModelS
 
         public CountryCodeMessage(byte[] payload)
         {
-            payload.RequireBytes(2);
+            payload.RequireBytes(RequireBytes);
 
             CountryCode = new string(new [] { payload[0], payload[1] }.Select(p => (char)p).ToArray());
         }

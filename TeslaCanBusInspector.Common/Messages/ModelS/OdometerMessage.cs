@@ -7,9 +7,8 @@ namespace TeslaCanBusInspector.Common.Messages.ModelS
     public class OdometerMessage : IOdometerMessage
     {
         public CarType CarType => CarType.ModelS | CarType.ModelX;
-
-        public const ushort TypeId = 0x562;
-        public ushort MessageTypeId => TypeId;
+        public ushort MessageTypeId => 0x562;
+        public byte RequireBytes => 4;
 
         public Mile OdometerValue { get; }
 
@@ -19,7 +18,7 @@ namespace TeslaCanBusInspector.Common.Messages.ModelS
 
         public OdometerMessage(byte[] payload)
         {
-            payload.RequireBytes(4);
+            payload.RequireBytes(RequireBytes);
 
             OdometerValue = new Mile((payload[0] + (payload[1] << 8) + (payload[2] << 16) + (payload[3] << 24)) / 1000.0m);
         }

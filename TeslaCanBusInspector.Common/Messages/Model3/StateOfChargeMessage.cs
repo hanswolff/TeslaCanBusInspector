@@ -7,9 +7,8 @@ namespace TeslaCanBusInspector.Common.Messages.Model3
     public class StateOfChargeMessage : IStateOfChargeMessage
     {
         public CarType CarType => CarType.Model3;
-
-        public const ushort TypeId = 0x292;
-        public ushort MessageTypeId => TypeId;
+        public ushort MessageTypeId => 0x292;
+        public byte RequireBytes => 8;
 
         public Percent StateOfChargeAvg { get; }
         public Percent StateOfChargeMax { get; }
@@ -22,7 +21,7 @@ namespace TeslaCanBusInspector.Common.Messages.Model3
 
         public StateOfChargeMessage(byte[] payload)
         {
-            payload.RequireBytes(8);
+            payload.RequireBytes(RequireBytes);
 
             StateOfChargeUI = new Percent(BitArrayConverter.ToUInt16(payload, 0, 10) * 0.1m);
             StateOfChargeMin = new Percent(BitArrayConverter.ToUInt16(payload, 10, 10) * 0.1m);

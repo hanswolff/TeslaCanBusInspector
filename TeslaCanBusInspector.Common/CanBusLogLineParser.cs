@@ -9,7 +9,7 @@ namespace TeslaCanBusInspector.Common
     public class CanBusLogLineParser : ICanBusLogLineParser
     {
         private static readonly Regex CanDumpFormat = new Regex(@"^\(\d+.\d+\) [\w\d]+ [A-F0-9]{3}#([A-F0-9]{2})+$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-        private static readonly Regex ScanMyTeslaFormat = new Regex(@"^[A-F0-9]{5,19}$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex ScanMyTeslaFormat = new Regex(@"^[A-F0-9]+$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private static readonly Dictionary<Regex, Func<string, CanBusLogLine>> Actions =
             new Dictionary<Regex, Func<string, CanBusLogLine>>
@@ -20,6 +20,7 @@ namespace TeslaCanBusInspector.Common
 
         private static readonly HashSet<string> SkipLines = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
         {
+            "ATCAF0",
             "ATCF 000",
             "ATCM 000",
             "BUFFER",
@@ -105,7 +106,7 @@ namespace TeslaCanBusInspector.Common
 
         private static CanBusLogLine TryParseLineScanMyTeslaLine(string line)
         {
-            if (line.Length != 19)
+            if (line.Length < 5)
             {
                 return null;
             }
@@ -117,7 +118,19 @@ namespace TeslaCanBusInspector.Common
                 return null;
             }
 
-            return new CanBusLogLine(0, null, messageTypeId, StringToByteArray(line.Substring(3)));
+            var hexString = line.Substring(3);
+            if (hexString.Length % 2 != 0)
+            {
+                return null;
+            }
+
+            if (!hexString.All(c => c >= '0' && c <= '9' || c >= 'A' && c <= 'F' || c >= 'a' && c <= 'f'))
+            {
+                return null;
+            }
+
+            var payload = StringToByteArray(hexString);
+            return new CanBusLogLine(0, null, messageTypeId, payload);
         }
 
         private static byte[] StringToByteArray(string hex)

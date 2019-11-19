@@ -2,7 +2,8 @@
 {
     public interface ICanBusMessage
     {
-        ushort MessageTypeId { get; }
         CarType CarType { get; }
+        ushort MessageTypeId { get; }
+        byte RequireBytes { get; }
     }
 }

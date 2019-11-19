@@ -8,9 +8,8 @@ namespace TeslaCanBusInspector.Common.Messages.ModelS
     public class StateOfChargeMessage : IStateOfChargeMessage
     {
         public CarType CarType => CarType.ModelS | CarType.ModelX;
-
-        public const ushort TypeId = 0x302;
-        public ushort MessageTypeId => TypeId;
+        public ushort MessageTypeId => 0x302;
+        public byte RequireBytes => 8;
 
         public ChargeTotalType ChargeTotalType { get; set; }
         public KiloWattHour ChargeTotal { get; }
@@ -23,7 +22,7 @@ namespace TeslaCanBusInspector.Common.Messages.ModelS
 
         public StateOfChargeMessage(byte[] payload)
         {
-            payload.RequireBytes(8);
+            payload.RequireBytes(RequireBytes);
 
             DetermineChargeTotalType(payload);
             ChargeTotal = new KiloWattHour((payload[4] + (payload[5] << 8) + (payload[6] << 16) + (payload[7] << 24)) / 1000.0m);

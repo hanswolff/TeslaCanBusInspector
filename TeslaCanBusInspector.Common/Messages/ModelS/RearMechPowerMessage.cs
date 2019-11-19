@@ -6,9 +6,8 @@ namespace TeslaCanBusInspector.Common.Messages.ModelS
     public class RearMechPowerMessage : IRearMechPowerMessage
     {
         public CarType CarType => CarType.ModelS | CarType.ModelX;
-
-        public const ushort TypeId = 0x266;
-        public ushort MessageTypeId => TypeId;
+        public ushort MessageTypeId => 0x266;
+        public byte RequireBytes => 8;
 
         public Volt RearInverterVoltage { get; }
         public KiloWatt RearMechPower { get; }
@@ -24,7 +23,7 @@ namespace TeslaCanBusInspector.Common.Messages.ModelS
 
         public RearMechPowerMessage(byte[] payload)
         {
-            payload.RequireBytes(8);
+            payload.RequireBytes(RequireBytes);
 
             RearInverterVoltage = new Volt(payload[0] / 10m);
             RearMechPower = new KiloWatt((payload[2] + ((payload[3] & 0x7) << 8) - 512 * (payload[3] & 0x4)) / 2m);

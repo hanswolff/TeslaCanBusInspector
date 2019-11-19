@@ -6,9 +6,8 @@ namespace TeslaCanBusInspector.Common.Messages.Model3
     public class TimestampMessage : ITimestampMessage
     {
         public CarType CarType => CarType.Model3;
-
-        public const ushort TypeId = 0x318;
-        public ushort MessageTypeId => TypeId;
+        public ushort MessageTypeId => 0x318;
+        public byte RequireBytes => 8;
 
         public DateTime Timestamp { get; }
 
@@ -18,7 +17,7 @@ namespace TeslaCanBusInspector.Common.Messages.Model3
 
         public TimestampMessage(byte[] payload)
         {
-            payload.RequireBytes(8);
+            payload.RequireBytes(RequireBytes);
 
             Timestamp = new DateTime(2000 + payload[0], payload[1], payload[4], payload[3], payload[5], payload[2], DateTimeKind.Utc);
         }

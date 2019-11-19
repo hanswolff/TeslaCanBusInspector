@@ -6,9 +6,8 @@ namespace TeslaCanBusInspector.Common.Messages.ModelS
     public class TemperatureMessage : ITemperatureMessage
     {
         public CarType CarType => CarType.ModelS | CarType.ModelX;
-
-        public const ushort TypeId = 0x318;
-        public ushort MessageTypeId => TypeId;
+        public ushort MessageTypeId => 0x318;
+        public byte RequireBytes => 5;
 
         public Celsius AirConditioningTemperature { get; }
         public Celsius InsideTemperature { get; }
@@ -21,12 +20,12 @@ namespace TeslaCanBusInspector.Common.Messages.ModelS
 
         public TemperatureMessage(byte[] payload)
         {
-            payload.RequireBytes(5);
+            payload.RequireBytes(RequireBytes);
 
-            this.AirConditioningTemperature = new Celsius(payload[4] / 2.0m - 40m);
-            this.InsideTemperature = new Celsius(payload[2] / 2.0m - 40m);
-            this.OutsideTemperature = new Celsius(payload[0] / 2.0m - 40m);
-            this.OutsideTemperatureFiltered = new Celsius(payload[1] / 2.0m - 40m);
+            AirConditioningTemperature = new Celsius(payload[4] / 2.0m - 40m);
+            InsideTemperature = new Celsius(payload[2] / 2.0m - 40m);
+            OutsideTemperature = new Celsius(payload[0] / 2.0m - 40m);
+            OutsideTemperatureFiltered = new Celsius(payload[1] / 2.0m - 40m);
         }
     }
 

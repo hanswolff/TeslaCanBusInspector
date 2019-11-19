@@ -6,9 +6,8 @@ namespace TeslaCanBusInspector.Common.Messages.Model3
     public class FrontTorqueMessage : IFrontTorqueMessage
     {
         public CarType CarType => CarType.Model3;
-
-        public const ushort TypeId = 0x186;
-        public ushort MessageTypeId => TypeId;
+        public ushort MessageTypeId => 0x186;
+        public byte RequireBytes => 8;
 
         public NewtonMeter FrontTorqueRequest { get; }
         public NewtonMeter FrontTorque { get; }
@@ -20,7 +19,7 @@ namespace TeslaCanBusInspector.Common.Messages.Model3
 
         public FrontTorqueMessage(byte[] payload)
         {
-            payload.RequireBytes(8);
+            payload.RequireBytes(RequireBytes);
 
             FrontTorqueRequest = new NewtonMeter(BitArrayConverter.ToInt16(payload, 12, 13) * 2m);
             FrontTorque = new NewtonMeter(BitArrayConverter.ToInt16(payload, 27, 13) * 2m);

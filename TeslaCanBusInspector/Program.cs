@@ -2,37 +2,25 @@ using System;
 using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
-using TeslaCanBusInspector.Common;
-using TeslaCanBusInspector.Common.Sockets;
+using TeslaCanBusInspector.Model3;
 
 namespace TeslaCanBusInspector
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
-            //TestSockets().Wait();
-
-            if (args.Length == 0)
+            if (args.Length < 2)
             {
                 Console.WriteLine("Missing command line arguments.");
                 return;
             }
 
             var canFile = args[0];
-            CanBusLogFileToJson.ReadFileToJson(CarType.Model3, canFile);
-        }
-
-        private static async Task TestSockets()
-        {
-            using (var socketCanReader = new SocketCanReader())
-            {
-                await socketCanReader.ConnectAsync("localhost", 28700).ConfigureAwait(false);
-
-                Console.ReadLine();
-            }
+            var csvFile = args[1];
+            await Model3CanBusLogFileToCsv.Transform(canFile, csvFile);
         }
     }
 }

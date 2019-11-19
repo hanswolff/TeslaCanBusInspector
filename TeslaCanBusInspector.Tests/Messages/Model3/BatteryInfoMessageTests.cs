@@ -7,36 +7,66 @@ namespace TeslaCanBusInspector.Tests.Messages.Model3
 {
     public class BatteryInfoMessageTests
     {
-        private readonly byte[] _examplePayload = { 0xA8, 0x87, 0xE2, 0xFF, 0xD3, 0x26, 0xFF, 0x0F };
+        private readonly byte[] _examplePayload = { 0x98, 0x04, 0xA6, 0x0D, 0x01, 0x00, 0x2E, 0x8D };
 
         [Fact]
-        public void BatteryCurrentRaw()
+        public void BmsChargePowerAvailable()
         {
             // Act      
             var message = new BatteryInfoMessage(_examplePayload);
 
             // Assert
-            message.BatteryCurrentRaw.Should().Be(new Ampere(3.05m));
+            message.BmsChargePowerAvailable.Should().Be(new KiloWatt(0m));
         }
 
         [Fact]
-        public void BatteryCurrentSmooth()
+        public void BmsChargeStatus()
         {
             // Act      
             var message = new BatteryInfoMessage(_examplePayload);
 
             // Assert
-            message.BatteryCurrentSmooth.Should().Be(new Ampere(0.6m));
+            message.BmsChargeStatus.Should().Be(1);
         }
 
         [Fact]
-        public void BatteryVoltage()
+        public void BmsNumberOfContactors()
         {
             // Act      
             var message = new BatteryInfoMessage(_examplePayload);
 
             // Assert
-            message.BatteryVoltage.Should().Be(new Volt(347.28m));
+            message.BmsNumberOfContactors.Should().Be(4);
+        }
+
+        [Fact]
+        public void BmsState()
+        {
+            // Act      
+            var message = new BatteryInfoMessage(_examplePayload);
+
+            // Assert
+            message.BmsState.Should().Be(0);
+        }
+
+        [Fact]
+        public void IsolationResistance()
+        {
+            // Act      
+            var message = new BatteryInfoMessage(_examplePayload);
+
+            // Assert
+            message.IsolationResistance.Should().Be(new KiloOhm(27904m));
+        }
+
+        [Fact]
+        public void MinBatteryTemperature()
+        {
+            // Act      
+            var message = new BatteryInfoMessage(_examplePayload);
+
+            // Assert
+            message.MinBatteryTemperature.Should().Be(new Celsius(30.5m));
         }
     }
 }

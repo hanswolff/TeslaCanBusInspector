@@ -7,12 +7,10 @@ namespace TeslaCanBusInspector.Common.Messages.ModelS
     public class VinMessage : IVinMessage
     {
         public CarType CarType => CarType.ModelS | CarType.ModelX;
-
-        public const ushort TypeId = 0x508;
-        public ushort MessageTypeId => TypeId;
+        public ushort MessageTypeId => 0x508;
+        public byte RequireBytes => 8;
 
         public byte VinPartIndex { get; }
-
         public string VinPartValue { get; }
 
         internal VinMessage()
@@ -21,7 +19,7 @@ namespace TeslaCanBusInspector.Common.Messages.ModelS
 
         public VinMessage(byte[] payload)
         {
-            payload.RequireBytes(8);
+            payload.RequireBytes(RequireBytes);
 
             VinPartIndex = payload[0];
 
@@ -33,7 +31,6 @@ namespace TeslaCanBusInspector.Common.Messages.ModelS
     public interface IVinMessage : ICanBusMessage
     {
         byte VinPartIndex { get; }
-
         string VinPartValue { get; }
     }
 }
