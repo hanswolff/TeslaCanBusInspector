@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using TeslaCanBusInspector.Common;
+using TeslaCanBusInspector.Common.LogParsing;
 using TeslaCanBusInspector.Common.Messages;
 using TeslaCanBusInspector.Common.Messages.Model3;
 

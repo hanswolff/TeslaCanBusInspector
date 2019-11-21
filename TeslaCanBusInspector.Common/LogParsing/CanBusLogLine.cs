@@ -1,4 +1,4 @@
-﻿namespace TeslaCanBusInspector.Common
+﻿namespace TeslaCanBusInspector.Common.LogParsing
 {
     public class CanBusLogLine
     {

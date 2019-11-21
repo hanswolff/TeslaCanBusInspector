@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace TeslaCanBusInspector.Common
+namespace TeslaCanBusInspector.Common.LogParsing
 {
     public class CanBusLogLineParser : ICanBusLogLineParser
     {

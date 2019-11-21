@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using Newtonsoft.Json;
 using TeslaCanBusInspector.Common;
+using TeslaCanBusInspector.Common.LogParsing;
 using TeslaCanBusInspector.Common.Messages;
 using TeslaCanBusInspector.Common.ValueTypes;
 
