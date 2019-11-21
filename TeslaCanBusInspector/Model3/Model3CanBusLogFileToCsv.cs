@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using TeslaCanBusInspector.Common;
 using TeslaCanBusInspector.Common.LogParsing;
@@ -8,41 +9,35 @@ using TeslaCanBusInspector.Common.Messages.Model3;
 
 namespace TeslaCanBusInspector.Model3
 {
-    public class Model3CanBusLogFileToCsv
+    public class Model3CanBusLogFileToCsv : IModel3CanBusLogFileToCsv
     {
-        public static async Task Transform(string canBusLogFile, string targetCsvFile)
-        {
-            var csvRowWriter = new CsvRowWriter();
-            var parser = new CanBusLogLineParser();
-            var messageFactory = new CanBusMessageFactory();
+        private readonly ICanBusLogFileToTimeLine _canBusLogFileToTimeLine;
+        private readonly ICsvRowWriter _csvRowWriter;
 
+        public Model3CanBusLogFileToCsv(
+            ICanBusLogFileToTimeLine canBusLogFileToTimeLine,
+            ICsvRowWriter csvRowWriter)
+        {
+            _canBusLogFileToTimeLine = canBusLogFileToTimeLine ?? throw new ArgumentNullException(nameof(canBusLogFileToTimeLine));
+            _csvRowWriter = csvRowWriter;
+        }
+
+        public async Task Transform(string canBusLogFile, string targetCsvFile)
+        {
             DateTime lastTimestamp = default;
             CsvRow lastRow = null;
             var row = new CsvRow();
 
             using var reader = File.OpenText(canBusLogFile);
+            var timeLine = await _canBusLogFileToTimeLine.ReadFromCanBusLog(reader);
+
             await using var writer = File.CreateText(targetCsvFile);
 
-            await csvRowWriter.WriteHeader(writer);
+            await _csvRowWriter.WriteHeader(writer);
             var lines = 0;
 
-            string line;
-            while ((line = reader.ReadLine()) != null)
+            foreach (var message in timeLine.Where(m => !(m is UnknownMessage)))
             {
-                if (string.IsNullOrEmpty(line)) continue;
-
-                var parsedLine = parser.TryParseLine(line);
-                if (parsedLine == null)
-                {
-                    continue;
-                }
-
-                var message = messageFactory.Create(CarType.Model3, parsedLine.MessageTypeId, parsedLine.Payload);
-                if (message is UnknownMessage)
-                {
-                    continue;
-                }
-
                 ParseMessage(message, row);
 
                 if (message is TimestampMessage timestampMessage)
@@ -60,7 +55,7 @@ namespace TeslaCanBusInspector.Model3
                     }
 
                     EnrichMemoizedValues(row, lastRow);
-                    await csvRowWriter.WriteLine(writer, row);
+                    await _csvRowWriter.WriteLine(writer, row);
                     if (lines++ % 100 == 0)
                     {
                         Console.Write('.');
@@ -103,5 +98,10 @@ namespace TeslaCanBusInspector.Model3
 
             row.StateOfCharge ??= lastRow.StateOfCharge;
         }
+    }
+
+    public interface IModel3CanBusLogFileToCsv
+    {
+        Task Transform(string canBusLogFile, string targetCsvFile);
     }
 }

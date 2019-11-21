@@ -2,6 +2,7 @@ using System;
 using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 using TeslaCanBusInspector.Model3;
 
 namespace TeslaCanBusInspector
@@ -20,7 +21,12 @@ namespace TeslaCanBusInspector
 
             var canFile = args[0];
             var csvFile = args[1];
-            await Model3CanBusLogFileToCsv.Transform(canFile, csvFile);
+
+            var services = new ServiceCollection();
+            IocConfig.Configure(services);
+            var serviceProvider = services.BuildServiceProvider();
+
+            await serviceProvider.GetRequiredService<IModel3CanBusLogFileToCsv>().Transform(canFile, csvFile);
         }
     }
 }

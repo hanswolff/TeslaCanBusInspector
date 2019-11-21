@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TeslaCanBusInspector.Common
 {
-    public class CsvRowWriter
+    public class CsvRowWriter : ICsvRowWriter
     {
         private static readonly Dictionary<string, Func<CsvRow, string>> Properties =
             new Dictionary<string, Func<CsvRow, string>>
@@ -44,5 +44,11 @@ namespace TeslaCanBusInspector.Common
 
             await writer.WriteLineAsync(sb.ToString());
         }
+    }
+
+    public interface ICsvRowWriter
+    {
+        Task WriteHeader(StreamWriter writer);
+        Task WriteLine(StreamWriter writer, CsvRow row);
     }
 }
