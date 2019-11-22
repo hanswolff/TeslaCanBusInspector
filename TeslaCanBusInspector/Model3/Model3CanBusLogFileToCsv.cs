@@ -11,14 +11,14 @@ namespace TeslaCanBusInspector.Model3
 {
     public class Model3CanBusLogFileToCsv : IModel3CanBusLogFileToCsv
     {
-        private readonly ICanBusLogFileToTimeLine _canBusLogFileToTimeLine;
+        private readonly ICanBusLogFileTimeLineReader _canBusLogFileTimeLineReader;
         private readonly ICsvRowWriter _csvRowWriter;
 
         public Model3CanBusLogFileToCsv(
-            ICanBusLogFileToTimeLine canBusLogFileToTimeLine,
+            ICanBusLogFileTimeLineReader canBusLogFileTimeLineReader,
             ICsvRowWriter csvRowWriter)
         {
-            _canBusLogFileToTimeLine = canBusLogFileToTimeLine ?? throw new ArgumentNullException(nameof(canBusLogFileToTimeLine));
+            _canBusLogFileTimeLineReader = canBusLogFileTimeLineReader ?? throw new ArgumentNullException(nameof(canBusLogFileTimeLineReader));
             _csvRowWriter = csvRowWriter;
         }
 
@@ -29,7 +29,7 @@ namespace TeslaCanBusInspector.Model3
             var row = new CsvRow();
 
             using var reader = File.OpenText(canBusLogFile);
-            var timeLine = await _canBusLogFileToTimeLine.ReadFromCanBusLog(reader);
+            var timeLine = await _canBusLogFileTimeLineReader.ReadFromCanBusLog(reader, true);
 
             await using var writer = File.CreateText(targetCsvFile);
 
@@ -76,9 +76,17 @@ namespace TeslaCanBusInspector.Model3
         {
             switch (message)
             {
+                case BatteryCapacityMessage m:
+                    row.FullBatteryCapacity = m.FullBatteryCapacity;
+                    row.ExpectedRemainingCapacity = m.ExpectedRemainingCapacity;
+                    return;
                 case BatteryPowerMessage m:
                     row.BatteryCurrent = m.BatteryCurrentRaw;
                     row.BatteryVoltage = m.BatteryVoltage;
+                    return;
+                case ChargeDischargeMessage m:
+                    row.TotalCharge = m.TotalCharge;
+                    row.TotalDischarge = m.TotalDischarge;
                     return;
                 case OdometerMessage m:
                     row.Odometer = m.Odometer;
@@ -89,6 +97,9 @@ namespace TeslaCanBusInspector.Model3
                 case StateOfChargeMessage m:
                     row.StateOfCharge = m.StateOfChargeMin;
                     return;
+                case TemperatureMessage m:
+                    row.AmbientTemperature = m.AmbientTempFiltered;
+                    return;
             }
         }
 
@@ -96,7 +107,12 @@ namespace TeslaCanBusInspector.Model3
         {
             if (lastRow == null) return;
 
+            row.AmbientTemperature ??= lastRow.AmbientTemperature;
+            row.ExpectedRemainingCapacity ??= lastRow.ExpectedRemainingCapacity;
+            row.FullBatteryCapacity ??= lastRow.FullBatteryCapacity;
             row.StateOfCharge ??= lastRow.StateOfCharge;
+            row.TotalCharge ??= lastRow.TotalCharge;
+            row.TotalDischarge ??= lastRow.TotalDischarge;
         }
     }
 

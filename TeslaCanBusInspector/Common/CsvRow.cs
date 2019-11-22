@@ -7,8 +7,15 @@ namespace TeslaCanBusInspector.Common
     {
         public DateTime Timestamp;
 
+        public Celsius? AmbientTemperature;
+
         public Ampere? BatteryCurrent;
         public Volt? BatteryVoltage;
+
+        public KiloWattHour? FullBatteryCapacity;
+        public KiloWattHour? ExpectedRemainingCapacity;
+        public KiloWattHour? TotalCharge;
+        public KiloWattHour? TotalDischarge;
 
         public Percent? StateOfCharge;
 

@@ -3,7 +3,7 @@
 // ReSharper disable UnusedMember.Global
 namespace TeslaCanBusInspector.Common.Messages.Model3
 {
-    public class CoolantMessage : ICoolantMessage
+    public class CoolantFlowMessage : ICoolantMessage
     {
         public CarType CarType => CarType.Model3;
         public ushort MessageTypeId => 0x241;
@@ -12,11 +12,11 @@ namespace TeslaCanBusInspector.Common.Messages.Model3
         public LitersPerMinute BatteryCoolantFlowRate { get; }
         public LitersPerMinute PowerTrainCoolantFlowRate { get; }
 
-        internal CoolantMessage()
+        internal CoolantFlowMessage()
         {
         }
 
-        public CoolantMessage(byte[] payload)
+        public CoolantFlowMessage(byte[] payload)
         {
             payload.RequireBytes(RequireBytes);
 

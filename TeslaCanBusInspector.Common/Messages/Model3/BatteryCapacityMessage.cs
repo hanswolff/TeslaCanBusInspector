@@ -4,7 +4,7 @@ using TeslaCanBusInspector.Common.ValueTypes;
 
 namespace TeslaCanBusInspector.Common.Messages.Model3
 {
-    public class FullBatteryCapacityMessage : IFullBatteryCapacityMessage
+    public class BatteryCapacityMessage : IBatteryCapacityMessage
     {
         public CarType CarType => CarType.Model3;
         public ushort MessageTypeId => 0x352;
@@ -17,11 +17,11 @@ namespace TeslaCanBusInspector.Common.Messages.Model3
         public KiloWattHour ToCompleteCharge { get; }
         public KiloWattHour EnergyBuffer { get; }
 
-        internal FullBatteryCapacityMessage()
+        internal BatteryCapacityMessage()
         {
         }
 
-        public FullBatteryCapacityMessage(byte[] payload)
+        public BatteryCapacityMessage(byte[] payload)
         {
             payload.RequireBytes(RequireBytes);
 
@@ -34,7 +34,7 @@ namespace TeslaCanBusInspector.Common.Messages.Model3
         }
     }
 
-    public interface IFullBatteryCapacityMessage : ICanBusMessage
+    public interface IBatteryCapacityMessage : ICanBusMessage
     {
         KiloWattHour FullBatteryCapacity { get; }
         KiloWattHour RemainingBatteryCapacity { get; }

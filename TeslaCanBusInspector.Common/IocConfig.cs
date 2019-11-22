@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using TeslaCanBusInspector.Common.Interpolation;
 using TeslaCanBusInspector.Common.LogParsing;
 
 namespace TeslaCanBusInspector.Common
@@ -7,9 +8,10 @@ namespace TeslaCanBusInspector.Common
     {
         public static void Configure(IServiceCollection services)
         {
-            services.AddSingleton<ICanBusLogFileToTimeLine, CanBusLogFileToTimeLine>();
+            services.AddSingleton<ICanBusLogFileTimeLineReader, CanBusLogFileTimeLineReaderReader>();
             services.AddSingleton<ICanBusLogLineParser, CanBusLogLineParser>();
             services.AddSingleton<ICanBusMessageFactory, CanBusMessageFactory>();
+            services.AddSingleton<ITimeLineInterpolator, TimeLineInterpolator>();
         }
     }
 }
