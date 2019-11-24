@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
 using TeslaCanBusInspector.Common.Messages.Model3;
+using TeslaCanBusInspector.Common.Session;
 using TeslaCanBusInspector.Common.Statistics;
-using TeslaCanBusInspector.Common.Timeline;
 
 namespace TeslaCanBusInspector.Common.Interpolation
 {

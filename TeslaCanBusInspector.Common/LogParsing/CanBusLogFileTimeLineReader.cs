@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using TeslaCanBusInspector.Common.Interpolation;
 using TeslaCanBusInspector.Common.Messages;
 using TeslaCanBusInspector.Common.Messages.Model3;
-using TeslaCanBusInspector.Common.Timeline;
+using TeslaCanBusInspector.Common.Session;
 
 namespace TeslaCanBusInspector.Common.LogParsing
 {

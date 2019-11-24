@@ -2,8 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using TeslaCanBusInspector.Common.Messages;
+using TeslaCanBusInspector.Common.Messages.Model3;
 
-namespace TeslaCanBusInspector.Common.Timeline
+namespace TeslaCanBusInspector.Common.Session
 {
     public class MessageTimeline : IEnumerable<TimedValue<ICanBusMessage>>
     {
@@ -11,6 +12,27 @@ namespace TeslaCanBusInspector.Common.Timeline
 
         public DateTime StartTime { get; private set; }
         public DateTime EndTime { get; private set; }
+
+        public TimedValue<ICanBusMessage> this[int index] => _messages[index];
+
+        public MessageTimeline()
+        {
+        }
+
+        public MessageTimeline(IEnumerable<ICanBusMessage> messages)
+        {
+            foreach (var message in messages)
+            {
+                if (message is TimestampMessage timestampMessage)
+                {
+                    Add(message, timestampMessage.Timestamp);
+                }
+                else
+                {
+                    Add(message, null);
+                }
+            }
+        }
 
         public void Add(ICanBusMessage message, DateTime? timestamp)
         {
