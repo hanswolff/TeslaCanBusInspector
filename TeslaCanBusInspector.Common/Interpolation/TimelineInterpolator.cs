@@ -32,10 +32,13 @@ namespace TeslaCanBusInspector.Common.Interpolation
                 return;
             }
 
-            var messageTypeForInterpolation = mostFrequentMessageTypes[0];
+            var messageTypeForInterpolation = 
+                mostFrequentMessageTypes.Contains(BatteryPowerMessage.MessageTypeIdConstant) 
+                    ? BatteryPowerMessage.MessageTypeIdConstant
+                    : mostFrequentMessageTypes[0];
 
-            ITimestampMessage lastTimestampMessage = null;
-            var lastTimestampMessageIndex = 0;
+            var timestampMessages = new CurrentLastValue<ITimestampMessage>();
+            var timestampIndexes = new CurrentLastValue<int>();
             for (var i = 0; i < messages.Count; i++)
             {
                 var message = messages[i];
@@ -43,29 +46,28 @@ namespace TeslaCanBusInspector.Common.Interpolation
                 {
                     continue;
                 }
-                
-                if (lastTimestampMessage == null)
+
+                timestampMessages.SetCurrent(timestampMessage);
+                timestampIndexes.SetCurrent(i);
+
+                if (timestampMessages.Last == null)
                 {
-                    lastTimestampMessage = timestampMessage;
-                    lastTimestampMessageIndex = i;
                     continue;
                 }
 
-                var timeDiff = timestampMessage.Timestamp - lastTimestampMessage.Timestamp;
-                if (timeDiff > TimeSpan.FromSeconds(3) || timeDiff == TimeSpan.Zero)
+                var timeDiff = timestampMessage.Timestamp - timestampMessages.Last.Timestamp;
+                if (timeDiff > TimeSpan.FromSeconds(10) || timeDiff == TimeSpan.Zero)
                 {
-                    lastTimestampMessage = timestampMessage;
-                    lastTimestampMessageIndex = i;
                     continue;
                 }
 
                 var rangeHistogram = new MessageTypeHistogram(
-                    Enumerable.Range(lastTimestampMessageIndex + 1, i - lastTimestampMessageIndex).Select(j => messages[j].Value));
+                    Enumerable.Range(timestampIndexes.Last + 1, i - timestampIndexes.Last).Select(j => messages[j].Value));
                 var timeToDivideBy = rangeHistogram[messageTypeForInterpolation].Count + 1;
                 var timeSlice = timeDiff / timeToDivideBy;
-                var interpolatedTime = lastTimestampMessage.Timestamp;
+                var interpolatedTime = timestampMessages.Last.Timestamp;
 
-                for (var j = lastTimestampMessageIndex + 1; j < i; j++)
+                for (var j = timestampIndexes.Last + 1; j < i; j++)
                 {
                     var rangeMessage = messages[j];
                     if (rangeMessage.Value.MessageTypeId != messageTypeForInterpolation)
@@ -76,9 +78,6 @@ namespace TeslaCanBusInspector.Common.Interpolation
                     interpolatedTime += timeSlice;
                     timeline.SetTime(j, interpolatedTime);
                 }
-
-                lastTimestampMessage = timestampMessage;
-                lastTimestampMessageIndex = i;
             }
         }
     }

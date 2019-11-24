@@ -12,7 +12,8 @@ namespace TeslaCanBusInspector.Common
             new Dictionary<string, Func<CsvRow, string>>
             {
                 { nameof(CsvRow.Timestamp), row => '"' + row.Timestamp.ToString("o") + '"' },
-                { nameof(CsvRow.AmbientTemperature), row => row.AmbientTemperature?.Value.ToString("F1") },
+                { nameof(CsvRow.BmsState), row => row.BmsState?.ToString() },
+                { nameof(CsvRow.BmsChargeStatus), row => row.BmsChargeStatus?.ToString() },
                 { nameof(CsvRow.StateOfCharge), row => row.StateOfCharge?.Value.ToString("F1") },
                 { nameof(CsvRow.FullBatteryCapacity), row => row.FullBatteryCapacity?.Value.ToString("F1") },
                 { nameof(CsvRow.ExpectedRemainingCapacity), row => row.ExpectedRemainingCapacity?.Value.ToString("F1") },
@@ -20,6 +21,7 @@ namespace TeslaCanBusInspector.Common
                 { nameof(CsvRow.TotalCharge), row => row.TotalDischarge?.Value.ToString("F3") },
                 { nameof(CsvRow.BatteryVoltage), row => row.BatteryVoltage?.Value.ToString("F1") },
                 { nameof(CsvRow.BatteryCurrent), row => row.BatteryCurrent?.Value.ToString("F1") },
+                { nameof(CsvRow.EnergyWattHour), row => row.EnergyWattHour?.Value.ToString("F") },
                 { nameof(CsvRow.Speed), row => row.Speed?.Value.ToString("F1") },
                 { nameof(CsvRow.Odometer), row => row.Odometer?.Value.ToString("F3") }
             };

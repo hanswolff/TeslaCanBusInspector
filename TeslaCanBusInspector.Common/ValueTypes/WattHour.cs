@@ -4,31 +4,31 @@ using System.Diagnostics.CodeAnalysis;
 namespace TeslaCanBusInspector.Common.ValueTypes
 {
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
-    public struct KiloWattHour : IEquatable<KiloWattHour>
+    public struct WattHour : IEquatable<WattHour>
     {
         public readonly decimal Value;
 
-        public KiloWattHour(int value)
+        public WattHour(int value)
         {
             Value = value;
         }
 
-        public KiloWattHour(decimal value)
+        public WattHour(decimal value)
         {
             Value = value;
         }
 
-        public KiloWattHour(double value)
+        public WattHour(double value)
         {
             Value = (decimal)value;
         }
 
-        public KiloWattHour(float value)
+        public WattHour(float value)
         {
             Value = (decimal)value;
         }
 
-        public bool Equals(KiloWattHour other)
+        public bool Equals(WattHour other)
         {
             return Value == other.Value;
         }
@@ -36,7 +36,7 @@ namespace TeslaCanBusInspector.Common.ValueTypes
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
-            return obj is KiloWattHour value && Equals(value);
+            return obj is WattHour value && Equals(value);
         }
 
         public override int GetHashCode()
@@ -44,19 +44,19 @@ namespace TeslaCanBusInspector.Common.ValueTypes
             return Value.GetHashCode();
         }
 
-        public static implicit operator decimal(KiloWattHour valueType)
+        public static implicit operator decimal(WattHour valueType)
         {
             return valueType.Value;
         }
 
-        public static implicit operator WattHour(KiloWattHour valueType)
+        public static implicit operator KiloWattHour(WattHour valueType)
         {
-            return new WattHour(valueType.Value * 1000m);
+            return new KiloWattHour(valueType.Value / 1000m);
         }
 
         public override string ToString()
         {
-            return $"{Value:N} kWh";
+            return $"{Value:N} Wh";
         }
 
         public string ToString(IFormatProvider formatProvider)

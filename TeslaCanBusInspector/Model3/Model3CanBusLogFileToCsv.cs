@@ -6,6 +6,7 @@ using TeslaCanBusInspector.Common;
 using TeslaCanBusInspector.Common.LogParsing;
 using TeslaCanBusInspector.Common.Messages;
 using TeslaCanBusInspector.Common.Messages.Model3;
+using TeslaCanBusInspector.Common.ValueTypes;
 
 namespace TeslaCanBusInspector.Model3
 {
@@ -36,39 +37,55 @@ namespace TeslaCanBusInspector.Model3
             await _csvRowWriter.WriteHeader(writer);
             var lines = 0;
 
+            var batteryPowerMessages = new CurrentLastValue<TimedValue<IBatteryPowerMessage>>();
+
             foreach (var timedMessage in timeLine.Where(m => !(m.Value is UnknownMessage)))
             {
+                var timestamp = timedMessage.Timestamp ?? default;
                 var message = timedMessage.Value;
+
                 ParseMessage(message, row);
 
-                if (timedMessage.Timestamp != null)
+                if (timestamp == default || timestamp == lastTimestamp)
                 {
-                    if (lastTimestamp == default)
-                    {
-                        lastTimestamp = timedMessage.Timestamp.Value;
-                        row = new CsvRow();
-                        continue;
-                    }
-
-                    if (timedMessage.Timestamp == lastTimestamp)
-                    {
-                        continue;
-                    }
-
-                    EnrichMemoizedValues(row, lastRow);
-                    await _csvRowWriter.WriteLine(writer, row);
-                    if (lines++ % 100 == 0)
-                    {
-                        Console.Write('.');
-                    }
-
-                    lastTimestamp = timedMessage.Timestamp.Value;
-                    lastRow = row;
-                    row = new CsvRow
-                    {
-                        Timestamp = timedMessage.Timestamp.Value
-                    };
+                    continue;
                 }
+
+                if (lastTimestamp == default)
+                {
+                    lastTimestamp = timestamp;
+                    row = new CsvRow();
+                    continue;
+                }
+
+                EnrichMemoizedValues(row, lastRow);
+
+                if (message is IBatteryPowerMessage batteryPowerMessage)
+                {
+                    var timedBatteryInfo = new TimedValue<IBatteryPowerMessage>(timedMessage.Timestamp, batteryPowerMessage);
+                    batteryPowerMessages.SetCurrent(timedBatteryInfo);
+
+                    if (batteryPowerMessages.Last?.Timestamp != null)
+                    {
+                        row.EnergyWattHour = new WattHour(
+                            batteryPowerMessages.Current.Value.BatteryCurrentRaw.Value *
+                            batteryPowerMessages.Current.Value.BatteryVoltage.Value *
+                            (decimal) (timestamp - batteryPowerMessages.Last.Timestamp.Value).TotalHours);
+                    }
+                }
+
+                await _csvRowWriter.WriteLine(writer, row);
+                if (lines++ % 100 == 0)
+                {
+                    Console.Write('.');
+                }
+
+                lastTimestamp = timestamp;
+                lastRow = row;
+                row = new CsvRow
+                {
+                    Timestamp = timestamp
+                };
             }
             Console.WriteLine();
         }
@@ -80,6 +97,10 @@ namespace TeslaCanBusInspector.Model3
                 case BatteryCapacityMessage m:
                     row.FullBatteryCapacity = m.FullBatteryCapacity;
                     row.ExpectedRemainingCapacity = m.ExpectedRemainingCapacity;
+                    return;
+                case BatteryInfoMessage m:
+                    row.BmsState = m.BmsState;
+                    row.BmsChargeStatus = m.BmsChargeStatus;
                     return;
                 case BatteryPowerMessage m:
                     row.BatteryCurrent = m.BatteryCurrentRaw;
@@ -98,9 +119,6 @@ namespace TeslaCanBusInspector.Model3
                 case StateOfChargeMessage m:
                     row.StateOfCharge = m.StateOfChargeMin;
                     return;
-                case TemperatureMessage m:
-                    row.AmbientTemperature = m.AmbientTempFiltered;
-                    return;
             }
         }
 
@@ -108,7 +126,8 @@ namespace TeslaCanBusInspector.Model3
         {
             if (lastRow == null) return;
 
-            row.AmbientTemperature ??= lastRow.AmbientTemperature;
+            row.BmsState ??= lastRow.BmsState;
+            row.BmsChargeStatus ??= lastRow.BmsChargeStatus;
             row.ExpectedRemainingCapacity ??= lastRow.ExpectedRemainingCapacity;
             row.FullBatteryCapacity ??= lastRow.FullBatteryCapacity;
             row.StateOfCharge ??= lastRow.StateOfCharge;

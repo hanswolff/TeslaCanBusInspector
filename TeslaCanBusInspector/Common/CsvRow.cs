@@ -7,7 +7,8 @@ namespace TeslaCanBusInspector.Common
     {
         public DateTime Timestamp;
 
-        public Celsius? AmbientTemperature;
+        public ushort? BmsState;
+        public ushort? BmsChargeStatus;
 
         public Ampere? BatteryCurrent;
         public Volt? BatteryVoltage;
@@ -21,5 +22,7 @@ namespace TeslaCanBusInspector.Common
 
         public KilometerPerHour? Speed;
         public Kilometer? Odometer;
+
+        public WattHour? EnergyWattHour;
     }
 }

@@ -51,7 +51,7 @@ namespace TeslaCanBusInspector.Common.ValueTypes
 
         public override string ToString()
         {
-            return $"{Value:N2} A";
+            return $"{Value:N} A";
         }
 
         public string ToString(IFormatProvider formatProvider)
