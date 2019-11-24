@@ -11,7 +11,7 @@ namespace TeslaCanBusInspector.Common
             services.AddSingleton<ICanBusLogFileTimeLineReader, CanBusLogFileTimeLineReaderReader>();
             services.AddSingleton<ICanBusLogLineParser, CanBusLogLineParser>();
             services.AddSingleton<ICanBusMessageFactory, CanBusMessageFactory>();
-            services.AddSingleton<ITimeLineInterpolator, TimeLineInterpolator>();
+            services.AddSingleton<ITimelineInterpolator, TimelineInterpolator>();
         }
     }
 }

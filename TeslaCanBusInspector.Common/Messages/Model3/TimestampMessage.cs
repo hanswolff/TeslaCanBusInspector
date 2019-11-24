@@ -5,8 +5,10 @@ namespace TeslaCanBusInspector.Common.Messages.Model3
 {
     public class TimestampMessage : ITimestampMessage
     {
+        public const ushort MessageTypeIdConstant = 0x318;
+
         public CarType CarType => CarType.Model3;
-        public ushort MessageTypeId => 0x318;
+        public ushort MessageTypeId => MessageTypeIdConstant;
         public byte RequireBytes => 8;
 
         public DateTime Timestamp { get; }

@@ -5,9 +5,9 @@ using TeslaCanBusInspector.Common.Messages;
 
 namespace TeslaCanBusInspector.Common.Timeline
 {
-    public class MessageTimeLine : IEnumerable<ICanBusMessage>
+    public class MessageTimeline : IEnumerable<TimedValue<ICanBusMessage>>
     {
-        private readonly List<ICanBusMessage> _messages = new List<ICanBusMessage>();
+        private readonly List<TimedValue<ICanBusMessage>> _messages = new List<TimedValue<ICanBusMessage>>();
 
         public DateTime StartTime { get; private set; }
         public DateTime EndTime { get; private set; }
@@ -16,14 +16,49 @@ namespace TeslaCanBusInspector.Common.Timeline
         {
             if (message == null) throw new ArgumentNullException(nameof(message));
 
-            UpdateStartEndTime(timestamp);
+            UpdateEndTimeSequential(timestamp);
+            UpdateStartTime(timestamp);
 
-            _messages.Add(message);
+            _messages.Add(new TimedValue<ICanBusMessage>(timestamp, message));
         }
 
-        private void UpdateStartEndTime(DateTime? timestamp)
+        public void SetTime(int index, DateTime timestamp)
         {
-            if (timestamp == null)
+            UpdateEndTime(timestamp);
+            UpdateStartTime(timestamp);
+
+            _messages[index].Timestamp = timestamp;
+        }
+
+        private void UpdateStartTime(DateTime? timestamp)
+        {
+            if (timestamp == null || timestamp.Value == default)
+            {
+                return;
+            }
+
+            if (StartTime == default || timestamp < StartTime)
+            {
+                StartTime = timestamp.Value;
+            }
+        }
+
+        private void UpdateEndTime(DateTime? timestamp)
+        {
+            if (timestamp == null|| timestamp.Value == default)
+            {
+                return;
+            }
+
+            if (EndTime == default || EndTime <= timestamp)
+            {
+                EndTime = timestamp.Value;
+            }
+        }
+
+        private void UpdateEndTimeSequential(DateTime? timestamp)
+        {
+            if (timestamp == null || timestamp.Value == default)
             {
                 return;
             }
@@ -36,14 +71,9 @@ namespace TeslaCanBusInspector.Common.Timeline
             {
                 throw new InvalidOperationException("CAN messages must be added in sequential time order");
             }
-
-            if (StartTime == default)
-            {
-                StartTime = timestamp.Value;
-            }
         }
 
-        public IEnumerator<ICanBusMessage> GetEnumerator()
+        public IEnumerator<TimedValue<ICanBusMessage>> GetEnumerator()
         {
             return _messages.GetEnumerator();
         }

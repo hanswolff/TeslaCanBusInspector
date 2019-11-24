@@ -12,27 +12,29 @@ namespace TeslaCanBusInspector.Common.LogParsing
     {
         private readonly ICanBusLogLineParser _canBusLogLineParser;
         private readonly ICanBusMessageFactory _canBusMessageFactory;
-        private readonly ITimeLineInterpolator _timeLineInterpolator;
+        private readonly ITimelineInterpolator _timelineInterpolator;
 
         public CanBusLogFileTimeLineReaderReader(
             ICanBusLogLineParser canBusLogLineParser,
             ICanBusMessageFactory canBusMessageFactory,
-            ITimeLineInterpolator timeLineInterpolator)
+            ITimelineInterpolator timelineInterpolator)
         {
             _canBusLogLineParser = canBusLogLineParser ?? throw new ArgumentNullException(nameof(canBusLogLineParser));
             _canBusMessageFactory = canBusMessageFactory ?? throw new ArgumentNullException(nameof(canBusMessageFactory));
-            _timeLineInterpolator = timeLineInterpolator ?? throw new ArgumentNullException(nameof(timeLineInterpolator));
+            _timelineInterpolator = timelineInterpolator ?? throw new ArgumentNullException(nameof(timelineInterpolator));
         }
         
-        public async Task<MessageTimeLine> ReadFromCanBusLog(StreamReader reader, bool interpolateTime)
+        public async Task<MessageTimeline> ReadFromCanBusLog(StreamReader reader, bool interpolateTime)
         {
-            var timeLine = new MessageTimeLine();
+            var timeLine = new MessageTimeline();
 
             string line;
             while ((line = await reader.ReadLineAsync()) != null)
             {
-
-                if (string.IsNullOrEmpty(line)) continue;
+                if (string.IsNullOrEmpty(line))
+                {
+                    continue;
+                }
 
                 var parsedLine = _canBusLogLineParser.TryParseLine(line);
                 if (parsedLine == null)
@@ -41,6 +43,10 @@ namespace TeslaCanBusInspector.Common.LogParsing
                 }
 
                 var message = _canBusMessageFactory.Create(CarType.Model3, parsedLine.MessageTypeId, parsedLine.Payload);
+                if (message is UnknownMessage)
+                {
+                    continue;
+                }
 
                 var timestamp = TryGetTimestamp(parsedLine, message);
 
@@ -49,7 +55,7 @@ namespace TeslaCanBusInspector.Common.LogParsing
 
             if (interpolateTime)
             {
-                _timeLineInterpolator.InterpolateTime(timeLine);
+                _timelineInterpolator.InterpolateTime(timeLine);
             }
 
             return timeLine;
@@ -76,6 +82,6 @@ namespace TeslaCanBusInspector.Common.LogParsing
 
     public interface ICanBusLogFileTimeLineReader
     {
-        Task<MessageTimeLine> ReadFromCanBusLog(StreamReader reader, bool interpolateTime);
+        Task<MessageTimeline> ReadFromCanBusLog(StreamReader reader, bool interpolateTime);
     }
 }

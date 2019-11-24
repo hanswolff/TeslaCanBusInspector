@@ -36,20 +36,21 @@ namespace TeslaCanBusInspector.Model3
             await _csvRowWriter.WriteHeader(writer);
             var lines = 0;
 
-            foreach (var message in timeLine.Where(m => !(m is UnknownMessage)))
+            foreach (var timedMessage in timeLine.Where(m => !(m.Value is UnknownMessage)))
             {
+                var message = timedMessage.Value;
                 ParseMessage(message, row);
 
-                if (message is TimestampMessage timestampMessage)
+                if (timedMessage.Timestamp != null)
                 {
                     if (lastTimestamp == default)
                     {
-                        lastTimestamp = timestampMessage.Timestamp;
+                        lastTimestamp = timedMessage.Timestamp.Value;
                         row = new CsvRow();
                         continue;
                     }
 
-                    if (timestampMessage.Timestamp == lastTimestamp)
+                    if (timedMessage.Timestamp == lastTimestamp)
                     {
                         continue;
                     }
@@ -61,11 +62,11 @@ namespace TeslaCanBusInspector.Model3
                         Console.Write('.');
                     }
 
-                    lastTimestamp = timestampMessage.Timestamp;
+                    lastTimestamp = timedMessage.Timestamp.Value;
                     lastRow = row;
                     row = new CsvRow
                     {
-                        Timestamp = timestampMessage.Timestamp
+                        Timestamp = timedMessage.Timestamp.Value
                     };
                 }
             }
