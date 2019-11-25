@@ -12,14 +12,14 @@ namespace TeslaCanBusInspector.Model3
 {
     public class Model3CanBusLogFileToCsv : IModel3CanBusLogFileToCsv
     {
-        private readonly ICanBusLogFileTimeLineReader _canBusLogFileTimeLineReader;
+        private readonly ICanBusLogFileTimelineReader _canBusLogFileTimelineReader;
         private readonly ICsvRowWriter _csvRowWriter;
 
         public Model3CanBusLogFileToCsv(
-            ICanBusLogFileTimeLineReader canBusLogFileTimeLineReader,
+            ICanBusLogFileTimelineReader canBusLogFileTimelineReader,
             ICsvRowWriter csvRowWriter)
         {
-            _canBusLogFileTimeLineReader = canBusLogFileTimeLineReader ?? throw new ArgumentNullException(nameof(canBusLogFileTimeLineReader));
+            _canBusLogFileTimelineReader = canBusLogFileTimelineReader ?? throw new ArgumentNullException(nameof(canBusLogFileTimelineReader));
             _csvRowWriter = csvRowWriter;
         }
 
@@ -30,7 +30,7 @@ namespace TeslaCanBusInspector.Model3
             var row = new CsvRow();
 
             using var reader = File.OpenText(canBusLogFile);
-            var timeLine = await _canBusLogFileTimeLineReader.ReadFromCanBusLog(reader, true);
+            var timeLine = await _canBusLogFileTimelineReader.ReadFromCanBusLog(reader, true);
 
             await using var writer = File.CreateText(targetCsvFile);
 

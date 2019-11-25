@@ -8,13 +8,13 @@ using TeslaCanBusInspector.Common.Session;
 
 namespace TeslaCanBusInspector.Common.LogParsing
 {
-    public class CanBusLogFileTimeLineReaderReader : ICanBusLogFileTimeLineReader
+    public class CanBusLogFileTimelineReader : ICanBusLogFileTimelineReader
     {
         private readonly ICanBusLogLineParser _canBusLogLineParser;
         private readonly ICanBusMessageFactory _canBusMessageFactory;
         private readonly ITimelineInterpolator _timelineInterpolator;
 
-        public CanBusLogFileTimeLineReaderReader(
+        public CanBusLogFileTimelineReader(
             ICanBusLogLineParser canBusLogLineParser,
             ICanBusMessageFactory canBusMessageFactory,
             ITimelineInterpolator timelineInterpolator)
@@ -80,7 +80,7 @@ namespace TeslaCanBusInspector.Common.LogParsing
         }
     }
 
-    public interface ICanBusLogFileTimeLineReader
+    public interface ICanBusLogFileTimelineReader
     {
         Task<MessageTimeline> ReadFromCanBusLog(StreamReader reader, bool interpolateTime);
     }

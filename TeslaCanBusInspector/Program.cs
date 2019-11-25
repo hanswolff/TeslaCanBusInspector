@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
-using TeslaCanBusInspector.Model3;
+using TeslaCanBusInspector.Common.LogParsing;
 
 namespace TeslaCanBusInspector
 {
@@ -13,20 +13,24 @@ namespace TeslaCanBusInspector
         {
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
-            if (args.Length < 2)
+            if (args.Length < 1)
             {
                 Console.WriteLine("Missing command line arguments.");
                 return;
             }
 
-            var canFile = args[0];
-            var csvFile = args[1];
+            var path = args[0];
 
             var services = new ServiceCollection();
             IocConfig.Configure(services);
             var serviceProvider = services.BuildServiceProvider();
 
-            await serviceProvider.GetRequiredService<IModel3CanBusLogFileToCsv>().Transform(canFile, csvFile);
+            var canBusLogPathReader = serviceProvider.GetRequiredService<ICanBusLogPathReader>();
+
+            await foreach (var timeline in canBusLogPathReader.LoadTimelines(path, false))
+            {
+                // TODO: process timeline
+            }
         }
     }
 }

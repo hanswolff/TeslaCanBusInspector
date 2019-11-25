@@ -34,6 +34,16 @@ namespace TeslaCanBusInspector.Common.Session
             }
         }
 
+        public void Add(TimedValue<ICanBusMessage> message)
+        {
+            if (message == null) throw new ArgumentNullException(nameof(message));
+
+            UpdateEndTimeSequential(message.Timestamp);
+            UpdateStartTime(message.Timestamp);
+
+            _messages.Add(message);
+        }
+
         public void Add(ICanBusMessage message, DateTime? timestamp)
         {
             if (message == null) throw new ArgumentNullException(nameof(message));
