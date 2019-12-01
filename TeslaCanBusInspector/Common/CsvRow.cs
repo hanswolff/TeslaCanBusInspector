@@ -22,7 +22,5 @@ namespace TeslaCanBusInspector.Common
 
         public KilometerPerHour? Speed;
         public Kilometer? Odometer;
-
-        public WattHour? EnergyWattHour;
     }
 }

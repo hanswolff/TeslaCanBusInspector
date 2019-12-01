@@ -13,13 +13,14 @@ namespace TeslaCanBusInspector
         {
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
-            if (args.Length < 1)
+            if (args.Length < 2)
             {
                 Console.WriteLine("Missing command line arguments.");
                 return;
             }
 
-            var path = args[0];
+            var sourcePath = args[0];
+            var destinationPath = args[1];
 
             var services = new ServiceCollection();
             IocConfig.Configure(services);
@@ -27,7 +28,7 @@ namespace TeslaCanBusInspector
 
             var chargingSessionsToCsv = serviceProvider.GetRequiredService<IModel3ChargingSessionsToCsv>();
 
-            await chargingSessionsToCsv.Transform(path, path);
+            await chargingSessionsToCsv.Transform(sourcePath, destinationPath);
         }
     }
 }
