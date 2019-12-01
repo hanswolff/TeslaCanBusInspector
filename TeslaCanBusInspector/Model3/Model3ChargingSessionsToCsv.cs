@@ -45,6 +45,11 @@ namespace TeslaCanBusInspector.Model3
         {
             foreach (var chargingSession in new ChargingSessionFilter().GetChargingSessions(timeline))
             {
+                if (chargingSession.StartTime == default || chargingSession.EndTime == default)
+                {
+                    continue;
+                }
+
                 var csvFileName = GetChargingSessionCsvFileName(destinationPath, chargingSession);
                 await using var writer = File.CreateText(csvFileName);
                 await _rowWriter.WriteHeader(writer);
@@ -68,13 +73,19 @@ namespace TeslaCanBusInspector.Model3
                     if (lastTimestamp == default)
                     {
                         lastTimestamp = timestamp;
-                        row = new ChargingSessionRow();
+                        row = new ChargingSessionRow
+                        {
+                            Timestamp = timestamp
+                        };
                         continue;
                     }
 
                     EnrichMemoizedValues(row, lastRow);
 
-                    await _rowWriter.WriteLine(writer, row);
+                    if (row.ShouldWriteRow)
+                    {
+                        await _rowWriter.WriteLine(writer, row);
+                    }
 
                     lastTimestamp = timestamp;
                     lastRow = row;
@@ -88,7 +99,7 @@ namespace TeslaCanBusInspector.Model3
 
         private static string GetChargingSessionCsvFileName(string path, MessageTimeline timeline)
         {
-            var fileName = $"ChargingSession-{timeline.StartTime:yyyyMMddHHmmss}-{timeline.EndTime:yyyyMMddHHmmss}.csv";
+            var fileName = $"ChargingSession-{timeline.StartTime:yyyyMMdd-HHmmss}-{timeline.EndTime:yyyyMMdd-HHmmss}.csv";
             return Path.Combine(path, fileName);
         }
 
@@ -96,6 +107,10 @@ namespace TeslaCanBusInspector.Model3
         {
             switch (message)
             {
+                case BatteryInfoMessage m:
+                    row.CellTemperature = m.MinBatteryTemperature;
+                    row.MaxChargePower = m.BmsChargePowerAvailable;
+                    return;
                 case BatteryPowerMessage m:
                     row.BatteryCurrent = m.BatteryCurrentRaw;
                     row.BatteryVoltage = m.BatteryVoltage;
@@ -110,6 +125,8 @@ namespace TeslaCanBusInspector.Model3
         {
             if (lastRow == null) return;
 
+            row.CellTemperature ??= lastRow.CellTemperature;
+            row.MaxChargePower ??= lastRow.MaxChargePower;
             row.StateOfCharge ??= lastRow.StateOfCharge;
         }
     }

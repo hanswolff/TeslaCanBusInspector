@@ -51,7 +51,10 @@ namespace TeslaCanBusInspector.Model3
                 if (lastTimestamp == default)
                 {
                     lastTimestamp = timestamp;
-                    row = new CsvRow();
+                    row = new CsvRow
+                    {
+                        Timestamp = timestamp
+                    };
                     continue;
                 }
 

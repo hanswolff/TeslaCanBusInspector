@@ -13,8 +13,11 @@ namespace TeslaCanBusInspector.Common
             {
                 { nameof(ChargingSessionRow.Timestamp), row => '"' + row.Timestamp.ToString("o") + '"' },
                 { nameof(ChargingSessionRow.StateOfCharge), row => row.StateOfCharge?.Value.ToString("F1") },
-                { nameof(ChargingSessionRow.BatteryVoltage), row => row.BatteryVoltage?.Value.ToString("F1") },
-                { nameof(ChargingSessionRow.BatteryCurrent), row => row.BatteryCurrent?.Value.ToString("F1") }
+                { nameof(ChargingSessionRow.CellTemperature), row => row.CellTemperature?.Value.ToString("F1") },
+                { nameof(ChargingSessionRow.BatteryVoltage), row => row.BatteryVoltage?.Value.ToString("F") },
+                { nameof(ChargingSessionRow.BatteryCurrent), row => row.BatteryCurrent?.Value.ToString("F") },
+                { nameof(ChargingSessionRow.BatteryPower), row => row.BatteryPower?.Value.ToString("F3") },
+                { nameof(ChargingSessionRow.MaxChargePower), row => row.MaxChargePower?.Value.ToString("F") }
             };
 
         public async Task WriteHeader(StreamWriter writer)
