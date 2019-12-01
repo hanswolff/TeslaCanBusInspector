@@ -28,7 +28,7 @@ namespace TeslaCanBusInspector
 
             var chargingSessionsToCsv = serviceProvider.GetRequiredService<IModel3ChargingSessionsToCsv>();
 
-            await chargingSessionsToCsv.Transform(sourcePath, destinationPath);
+            await chargingSessionsToCsv.Transform(sourcePath, destinationPath, TimeSpan.FromMinutes(15));
         }
     }
 }

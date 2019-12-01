@@ -15,6 +15,11 @@ namespace TeslaCanBusInspector.Common
         public KiloWatt? BatteryPower => BatteryCurrent != null && BatteryVoltage != null
             ? new KiloWatt(BatteryCurrent.Value * BatteryVoltage.Value / 1000m)
             : (KiloWatt?)null;
+
+        public KiloWatt? BatteryPowerAbs => BatteryPower != null
+            ? new KiloWatt(Math.Abs(BatteryPower.Value))
+            : (KiloWatt?) null;
+
         public KiloWatt? MaxChargePower;
 
         public Percent? StateOfCharge;

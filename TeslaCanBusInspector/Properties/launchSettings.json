@@ -2,7 +2,7 @@
   "profiles": {
     "TeslaCanBusInspector": {
       "commandName": "Project",
-      "commandLineArgs": "\"C:\\Git\\tesla\\CAN\\Model-3-Rocket\\2019-11\" \"D:\\Tesla\""
+      "commandLineArgs": "\"C:\\Git\\tesla\\CAN\\Model-3-Rocket\" \"D:\\Tesla\""
     }
   }
 }

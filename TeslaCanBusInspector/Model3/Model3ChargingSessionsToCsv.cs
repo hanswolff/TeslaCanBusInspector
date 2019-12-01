@@ -23,15 +23,15 @@ namespace TeslaCanBusInspector.Model3
             _rowWriter = rowWriter;
         }
 
-        public async Task Transform(string sourcePath, string destinationPath)
+        public async Task Transform(string sourcePath, string destinationPath, TimeSpan minChargingSessionLength)
         {
-            await foreach (var timeline in _canBusLogPathReader.LoadTimelines(sourcePath, false))
+            await foreach (var timeline in _canBusLogPathReader.LoadTimelines(sourcePath, true))
             {
                 Console.Write('.');
 
                 try
                 {
-                    await ProcessTimeline(destinationPath, timeline);
+                    await ProcessTimeline(destinationPath, timeline, minChargingSessionLength);
                 }
                 catch (Exception ex)
                 {
@@ -41,11 +41,16 @@ namespace TeslaCanBusInspector.Model3
             Console.WriteLine();
         }
 
-        private async Task ProcessTimeline(string destinationPath, MessageTimeline timeline)
+        private async Task ProcessTimeline(string destinationPath, MessageTimeline timeline, TimeSpan minChargingSessionLength)
         {
             foreach (var chargingSession in new ChargingSessionFilter().GetChargingSessions(timeline))
             {
                 if (chargingSession.StartTime == default || chargingSession.EndTime == default)
+                {
+                    continue;
+                }
+
+                if (chargingSession.EndTime - chargingSession.StartTime < minChargingSessionLength)
                 {
                     continue;
                 }
@@ -133,6 +138,6 @@ namespace TeslaCanBusInspector.Model3
 
     public interface IModel3ChargingSessionsToCsv
     {
-        Task Transform(string sourcePath, string destinationPath);
+        Task Transform(string sourcePath, string destinationPath, TimeSpan minChargingSessionLength);
     }
 }
