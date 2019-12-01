@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
-using TeslaCanBusInspector.Common.LogParsing;
+using TeslaCanBusInspector.Model3;
 
 namespace TeslaCanBusInspector
 {
@@ -25,12 +25,9 @@ namespace TeslaCanBusInspector
             IocConfig.Configure(services);
             var serviceProvider = services.BuildServiceProvider();
 
-            var canBusLogPathReader = serviceProvider.GetRequiredService<ICanBusLogPathReader>();
+            var chargingSessionsToCsv = serviceProvider.GetRequiredService<IModel3ChargingSessionsToCsv>();
 
-            await foreach (var timeline in canBusLogPathReader.LoadTimelines(path, false))
-            {
-                // TODO: process timeline
-            }
+            await chargingSessionsToCsv.Transform(path, path);
         }
     }
 }
