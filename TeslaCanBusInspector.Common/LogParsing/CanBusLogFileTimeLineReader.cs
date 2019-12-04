@@ -71,7 +71,7 @@ namespace TeslaCanBusInspector.Common.LogParsing
                 return timestamp.UtcDateTime;
             }
 
-            if (message is TimestampMessage timestampMessage)
+            if (message is TimestampMessage timestampMessage && timestampMessage.IsValid)
             {
                 return timestampMessage.Timestamp;
             }

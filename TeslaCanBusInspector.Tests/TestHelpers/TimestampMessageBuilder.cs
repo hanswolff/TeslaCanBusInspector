@@ -7,10 +7,6 @@ namespace TeslaCanBusInspector.Tests.TestHelpers
     {
         private byte[] _payload = new byte[0];
 
-        public TimestampMessageBuilder()
-        {
-        }
-
         public TimestampMessageBuilder(DateTime dateTime)
         {
             WithTimestamp(dateTime);

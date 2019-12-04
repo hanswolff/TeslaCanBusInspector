@@ -23,7 +23,7 @@ namespace TeslaCanBusInspector.Common.Session
         {
             foreach (var message in messages)
             {
-                if (message is TimestampMessage timestampMessage)
+                if (message is TimestampMessage timestampMessage && timestampMessage.IsValid)
                 {
                     Add(message, timestampMessage.Timestamp);
                 }
