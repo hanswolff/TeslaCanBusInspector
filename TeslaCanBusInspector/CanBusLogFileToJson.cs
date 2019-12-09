@@ -21,25 +21,24 @@ namespace TeslaCanBusInspector
                 Formatting = Formatting.None
             };
 
-            using (var reader = File.OpenText(fileName))
+            using var reader = File.OpenText(fileName);
+
+            string line;
+            while ((line = reader.ReadLine()) != null)
             {
-                string line;
-                while ((line = reader.ReadLine()) != null)
+                if (string.IsNullOrEmpty(line)) continue;
+
+                var parsedLine = parser.TryParseLine(line);
+                if (parsedLine == null)
                 {
-                    if (string.IsNullOrEmpty(line)) continue;
-
-                    var parsedLine = parser.TryParseLine(line);
-                    if (parsedLine == null)
-                    {
-                        continue;
-                    }
-
-                    var message = messageFactory.Create(carType, parsedLine.MessageTypeId, parsedLine.Payload);
-                    if (message is UnknownMessage) continue;
-
-                    var json = JsonConvert.SerializeObject(message, jsonSerializerSettings);
-                    Console.WriteLine(json);
+                    continue;
                 }
+
+                var message = messageFactory.Create(carType, parsedLine.MessageTypeId, parsedLine.Payload);
+                if (message is UnknownMessage) continue;
+
+                var json = JsonConvert.SerializeObject(message, jsonSerializerSettings);
+                Console.WriteLine(json);
             }
         }
 

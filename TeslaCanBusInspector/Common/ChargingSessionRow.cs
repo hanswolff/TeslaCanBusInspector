@@ -9,6 +9,8 @@ namespace TeslaCanBusInspector.Common
 
         public Ampere? BatteryCurrent;
         public Volt? BatteryVoltage;
+        public ushort? BmsChargeStatus;
+        public ushort? BmsState;
 
         public Celsius? CellTemperature;
 

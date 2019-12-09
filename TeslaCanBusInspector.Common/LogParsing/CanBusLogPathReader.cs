@@ -30,7 +30,8 @@ namespace TeslaCanBusInspector.Common.LogParsing
                 directoryInfo = directoryInfo.Root;
             }
 
-            foreach (var file in directoryInfo.EnumerateFiles("*.*", SearchOption.AllDirectories))
+            var searchOption = includeSubDirs ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
+            foreach (var file in directoryInfo.EnumerateFiles("*.*", searchOption))
             {
                 if (!AllowedFileExtensions.Contains(file.Extension))
                 {

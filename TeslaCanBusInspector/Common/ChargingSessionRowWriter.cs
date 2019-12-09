@@ -12,6 +12,8 @@ namespace TeslaCanBusInspector.Common
             new Dictionary<string, Func<ChargingSessionRow, string>>
             {
                 { nameof(ChargingSessionRow.Timestamp), row => '"' + row.Timestamp.ToString("o") + '"' },
+                { nameof(ChargingSessionRow.BmsChargeStatus), row => row.BmsChargeStatus?.ToString() },
+                { nameof(ChargingSessionRow.BmsState), row => row.BmsState?.ToString() },
                 { nameof(ChargingSessionRow.StateOfCharge), row => row.StateOfCharge?.Value.ToString("F1") },
                 { nameof(ChargingSessionRow.CellTemperature), row => row.CellTemperature?.Value.ToString("F1") },
                 { nameof(ChargingSessionRow.BatteryVoltage), row => row.BatteryVoltage?.Value.ToString("F") },

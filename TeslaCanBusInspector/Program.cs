@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using TeslaCanBusInspector.Configuration;
 using TeslaCanBusInspector.Model3;
 
 namespace TeslaCanBusInspector
@@ -28,7 +29,12 @@ namespace TeslaCanBusInspector
 
             var chargingSessionsToCsv = serviceProvider.GetRequiredService<IModel3ChargingSessionsToCsv>();
 
-            await chargingSessionsToCsv.Transform(sourcePath, destinationPath, TimeSpan.FromMinutes(15));
+            var options = new ChargingSessionTransformationOptions
+            {
+                MinimumChargingSessionDuration = TimeSpan.FromMinutes(15),
+                IncludeSubdirectories = false
+            };
+            await chargingSessionsToCsv.Transform(sourcePath, destinationPath, options);
         }
     }
 }

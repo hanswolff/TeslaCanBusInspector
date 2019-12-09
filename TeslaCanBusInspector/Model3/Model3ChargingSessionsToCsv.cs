@@ -7,6 +7,7 @@ using TeslaCanBusInspector.Common.LogParsing;
 using TeslaCanBusInspector.Common.Messages;
 using TeslaCanBusInspector.Common.Messages.Model3;
 using TeslaCanBusInspector.Common.Session;
+using TeslaCanBusInspector.Configuration;
 
 namespace TeslaCanBusInspector.Model3
 {
@@ -23,15 +24,15 @@ namespace TeslaCanBusInspector.Model3
             _rowWriter = rowWriter;
         }
 
-        public async Task Transform(string sourcePath, string destinationPath, TimeSpan minChargingSessionLength)
+        public async Task Transform(string sourcePath, string destinationPath, ChargingSessionTransformationOptions options)
         {
-            await foreach (var timeline in _canBusLogPathReader.LoadTimelines(sourcePath, true))
+            await foreach (var timeline in _canBusLogPathReader.LoadTimelines(sourcePath, options.IncludeSubdirectories))
             {
                 Console.Write('.');
 
                 try
                 {
-                    await ProcessTimeline(destinationPath, timeline, minChargingSessionLength);
+                    await ProcessTimeline(destinationPath, timeline, options);
                 }
                 catch (Exception ex)
                 {
@@ -41,7 +42,7 @@ namespace TeslaCanBusInspector.Model3
             Console.WriteLine();
         }
 
-        private async Task ProcessTimeline(string destinationPath, MessageTimeline timeline, TimeSpan minChargingSessionLength)
+        private async Task ProcessTimeline(string destinationPath, MessageTimeline timeline, ChargingSessionTransformationOptions options)
         {
             foreach (var chargingSession in new ChargingSessionFilter().GetChargingSessions(timeline))
             {
@@ -50,7 +51,8 @@ namespace TeslaCanBusInspector.Model3
                     continue;
                 }
 
-                if (chargingSession.EndTime - chargingSession.StartTime < minChargingSessionLength)
+                if (options.MinimumChargingSessionDuration > TimeSpan.Zero &&
+                    chargingSession.EndTime - chargingSession.StartTime < options.MinimumChargingSessionDuration)
                 {
                     continue;
                 }
@@ -113,6 +115,8 @@ namespace TeslaCanBusInspector.Model3
             switch (message)
             {
                 case BatteryInfoMessage m:
+                    row.BmsChargeStatus = m.BmsChargeStatus;
+                    row.BmsState = m.BmsState;
                     row.CellTemperature = m.MinBatteryTemperature;
                     row.MaxChargePower = m.BmsChargePowerAvailable;
                     return;
@@ -130,6 +134,8 @@ namespace TeslaCanBusInspector.Model3
         {
             if (lastRow == null) return;
 
+            row.BmsChargeStatus ??= lastRow.BmsChargeStatus;
+            row.BmsState ??= lastRow.BmsState;
             row.CellTemperature ??= lastRow.CellTemperature;
             row.MaxChargePower ??= lastRow.MaxChargePower;
             row.StateOfCharge ??= lastRow.StateOfCharge;
@@ -138,6 +144,6 @@ namespace TeslaCanBusInspector.Model3
 
     public interface IModel3ChargingSessionsToCsv
     {
-        Task Transform(string sourcePath, string destinationPath, TimeSpan minChargingSessionLength);
+        Task Transform(string sourcePath, string destinationPath, ChargingSessionTransformationOptions options);
     }
 }
