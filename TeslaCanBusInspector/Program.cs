@@ -32,7 +32,7 @@ namespace TeslaCanBusInspector
             var options = new ChargingSessionTransformationOptions
             {
                 MinimumChargingSessionDuration = TimeSpan.FromMinutes(15),
-                IncludeSubdirectories = false
+                IncludeSubdirectories = true
             };
             await chargingSessionsToCsv.Transform(sourcePath, destinationPath, options);
         }

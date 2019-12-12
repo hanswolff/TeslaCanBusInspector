@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -26,19 +27,25 @@ namespace TeslaCanBusInspector.Model3
 
         public async Task Transform(string sourcePath, string destinationPath, ChargingSessionTransformationOptions options)
         {
+            var tasks = new List<Task>();
+
             await foreach (var timeline in _canBusLogPathReader.LoadTimelines(sourcePath, options.IncludeSubdirectories))
             {
                 Console.Write('.');
 
-                try
-                {
-                    await ProcessTimeline(destinationPath, timeline, options);
-                }
-                catch (Exception ex)
-                {
-                    await Console.Error.WriteLineAsync(ex.ToString());
-                }
+                tasks.Add(Task.Run(async () => {
+                    try
+                    {
+                        await ProcessTimeline(destinationPath, timeline, options);
+                    }
+                    catch (Exception ex)
+                    {
+                        await Console.Error.WriteLineAsync(ex.ToString());
+                    }
+                }));
             }
+
+            await Task.WhenAll(tasks);
             Console.WriteLine();
         }
 

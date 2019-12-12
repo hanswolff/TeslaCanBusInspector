@@ -41,9 +41,7 @@ namespace TeslaCanBusInspector.Common.Session
         {
             if (message is IModel3BatteryInfoMessage batteryInfoMessage)
             {
-                return batteryInfoMessage.BmsChargeStatus == 1 ||
-                       batteryInfoMessage.BmsState == 2 ||
-                       batteryInfoMessage.BmsState == 3;
+                return batteryInfoMessage.BmsState % 2 > 0;
             }
 
             return null;
